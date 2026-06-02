@@ -23,26 +23,3 @@ niewiem
 def hello():
     print("Przykładowy kod")
 ```
-
-### H3 - Subsection
-
-**bold**
-*italic*
-~~strikethrough~~
-`inline code`
-
-# Unordered
-- Item one
-- Item two
-  - Nested item
-
-# Ordered
-1. First
-2. Second
-3. Third
-
-```python
-def hello():
-    print("Hello World")
-```
-
