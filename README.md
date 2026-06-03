@@ -10,8 +10,10 @@ gra konsolowa rpg
 
 ### Inspiracje
 
-różne MMO-sy w które grałem (np. WoW)
-gry bardziej skupione na tekście niż grafice, głównie RPGi
+Różne gry w które grałem, ale głównie.
+cRPG oraz MMORPG (np.: WoW, SWtOR, Shadowrun Trilogy)
+różne gry tekstowe/ascii, (np.: Warsim: The Realm of Aslona, Moonring)
+I kilka innych w które napewno grałem ale nie pamiętam nazw.
 
 ## Jak Uruchomić
 
