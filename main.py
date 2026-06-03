@@ -1,4 +1,5 @@
 from console import console
+from player_creator import create_character
 
 def game_loop():
     console.print("Python Text RPG", style="bold red")
@@ -14,7 +15,7 @@ def game_loop():
             case "1":
                 console.print("Not implemented.")
             case "2":
-                console.print("Not implemented.")
+                create_character()
             case "quit" | "exit" | "q":
                 console.print("Exiting.")
                 break
