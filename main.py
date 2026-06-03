@@ -1,9 +1,6 @@
-from rich import print
-from rich.console import Console
-
+from console import console
 
 def game_loop():
-    console = Console()
     console.print("Python Text RPG", style="bold red")
     
     while True:
