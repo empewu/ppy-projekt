@@ -1,4 +1,4 @@
-from items import HeadArmour
+from items.base import HeadArmour
 
 CopperHelmet = HeadArmour(
     "Copper Helmet",

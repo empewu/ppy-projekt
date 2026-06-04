@@ -1,4 +1,4 @@
-from items import TorsoArmour
+from items.base import TorsoArmour
 
 CopperTorso = TorsoArmour(
     "Copper Plate",

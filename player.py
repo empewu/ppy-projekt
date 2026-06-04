@@ -55,4 +55,8 @@ class Player:
     def is_alive(self):
         return self.healthCurrent > 0
 
-
+    def heal(self, amount=None):
+        if amount is None:
+            self.healthCurrent = self.healthMax
+        else:
+            self.healthCurrent = min(self.healthMax, self.healthCurrent + amount)

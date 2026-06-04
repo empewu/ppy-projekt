@@ -1,4 +1,4 @@
-from items import OffHand
+from items.base import OffHand
 
 MagicalTalisman = OffHand(
     "Magical Talisman",

@@ -45,9 +45,9 @@ def run_location(player, location):
                     console.print("[dim]You find nothing of note.[/dim]")
 
             case "rest":
-                heal = player.healthMax // 3
-                player.healthCurrent = min(player.healthMax, player.healthCurrent + heal)
-                console.print(f"[green]You rest and recover {heal} HP.[/green]")
+                healing = player.healthMax // 3
+                player.heal(healing)
+                console.print(f"[green]You rest and recover {healing} HP.[/green]")
 
     if player.is_alive():
         console.print(f"\n[bold green]You cleared {location['name']}![/bold green]")

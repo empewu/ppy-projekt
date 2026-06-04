@@ -26,14 +26,14 @@ def start_combat(player, enemy):
     return "victory"
 
 def attack(player, enemy):
-    damage_dealt = (get_total_damage(player) * (100 / 100 + enemy.defence))
+    damage_dealt = int(get_total_damage(player) * (100 / (100 + enemy.defence)))
     enemy.health -= damage_dealt
     console.print(f"You deal [red]{damage_dealt}[/red] damage to {enemy.name}.")
 
     if enemy.health <= 0:
         return
 
-    damage_taken = (enemy.damage * (100 / 100 + get_total_defence(player)))
+    damage_taken = int(enemy.damage * (100 / (100 + get_total_defence(player))))
     player.healthCurrent -= damage_taken
     console.print(f"{enemy.name} deals [red]{damage_taken}[/red] damage to you.")
 

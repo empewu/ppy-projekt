@@ -1,4 +1,5 @@
 from enemies import *
+from loot_table import LOCATION_LOOT
 
 LOCATIONS = {
     1: {
@@ -7,7 +8,7 @@ LOCATIONS = {
         "encounters": [
             {"type": "combat", "enemy": Slime},
             {"type": "combat", "enemy": Wolf},
-            {"type": "treasure", "loot": "Dark Forest"},
+            {"type": "treasure", "loot": LOCATION_LOOT["Dark Forest"]},
             {"type": "rest"},
             {"type": "combat", "enemy": Spider},
             {"type": "combat", "enemy": Goblin},
@@ -19,7 +20,8 @@ LOCATIONS = {
         "encounters": [
             {"type": "combat", "enemy": Skeleton},
             {"type": "combat", "enemy": Skeleton},
-            {"type": "treasure", "loot": "Ancient Ruin"},
+            {"type": "rest"},
+            {"type": "treasure", "loot": LOCATION_LOOT["Ancient Ruins"]},
             {"type": "combat", "enemy": Golem},
         ]
     },
@@ -29,6 +31,7 @@ LOCATIONS = {
         "encounters": [
             {"type": "combat", "enemy": Slime},
             {"type": "rest"},
+            {"type": "treasure", "loot": LOCATION_LOOT["Dark Cave"]},
             {"type": "combat", "enemy": Spider},
             {"type": "combat", "enemy": Goblin},
         ]
@@ -38,9 +41,8 @@ LOCATIONS = {
         "description": "A murky swamp shrouded in mist.",
         "encounters": [
             {"type": "combat", "enemy": Wraith},
-            {"type": "treasure", "loot": "Haunted Swamp"},
+            {"type": "treasure", "loot": LOCATION_LOOT["Misty Swamp"]},
             {"type": "combat", "enemy": Ghoul},
-            {"type": "combat", "enemy": Slime},
         ]
     },
 }

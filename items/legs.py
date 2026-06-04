@@ -1,4 +1,4 @@
-from items import LegsArmour
+from items.base import LegsArmour
 
 CopperBoots = LegsArmour(
     "Copper Greaves",

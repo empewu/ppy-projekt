@@ -1,4 +1,4 @@
-from items import MainHand
+from items.base import MainHand
 
 CopperSword = MainHand(
     "Copper Sword",

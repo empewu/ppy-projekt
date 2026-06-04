@@ -6,7 +6,7 @@ from exploration import exploration_menu
 from exceptions import PlayerDeadError
 
 def game_hub(player):
-    while player.is_alive():
+    while True:
         try:
             console.print(f"\n[bold yellow]=== {player.name} ===[/bold yellow]")
             console.print(f"[green]HP: {player.healthCurrent}/{player.healthMax}[/green] | [yellow]Gold: {player.gold}[/yellow]")
@@ -14,9 +14,10 @@ def game_hub(player):
             console.print("1. Explore")
             console.print("2. Trader")
             console.print("3. Inventory & Equipment")
-            console.print("4. Save & Quit")
+            console.print("4. Rest & Heal")
+            console.print("0. Save & Quit")
 
-            match min_max_number("> ", min_val=1, max_val=4):
+            match min_max_number("> ", min_val=0, max_val=4):
                 case 1:
                     pass
                     exploration_menu(player)
@@ -26,6 +27,10 @@ def game_hub(player):
                 case 3:
                     inventory_menu(player)
                 case 4:
+                    console.print("\nYou use the time to fully [green]rest and heal[/green] your wounds.")
+                    player.heal()
+                    console.print("[dim]Health has been restored to max.[/dim]")
+                case 0:
                     save_menu(player)
                     break
         

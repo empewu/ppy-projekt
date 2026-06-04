@@ -1,4 +1,4 @@
-from items import ArmsArmour
+from items.base import ArmsArmour
 
 CopperGloves = ArmsArmour(
     "Copper Gauntlets",
