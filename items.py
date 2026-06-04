@@ -16,25 +16,25 @@ class Equipment(Item):
 
 #zbroje
 class Armour(Equipment):
-    def __init__(self, name, description, value, defence, slot):
-        super().__init__(name, description, value, slot)
+    def __init__(self, name, description, value, defence, slot, **kwargs):
+        super().__init__(name, description, value, slot, **kwargs)
         self.defence = defence
 
 class HeadArmour(Armour):
-    def __init__(self, name, description, value, defence):
-        super().__init__(name, description, value, defence, slot="Head")
+    def __init__(self, name, description, value, defence, **kwargs):
+        super().__init__(name, description, value, defence, slot="Head", **kwargs)
 
 class TorsoArmour(Armour):
-    def __init__(self, name, description, value, defence):
-        super().__init__(name, description, value, defence, slot="Torso")
+    def __init__(self, name, description, value, defence, **kwargs):
+        super().__init__(name, description, value, defence, slot="Torso", **kwargs)
 
 class ArmsArmour(Armour):
-    def __init__(self, name, description, value, defence):
-        super().__init__(name, description, value, defence, slot="Arms")
+    def __init__(self, name, description, value, defence, **kwargs):
+        super().__init__(name, description, value, defence, slot="Arms", **kwargs)
 
 class LegsArmour(Armour):
-    def __init__(self, name, description, value, defence):
-        super().__init__(name, description, value, defence, slot="Legs")
+    def __init__(self, name, description, value, defence, **kwargs):
+        super().__init__(name, description, value, defence, slot="Legs", **kwargs)
 
 
 #bronie, mainhand i offhand
