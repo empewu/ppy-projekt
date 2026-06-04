@@ -7,7 +7,7 @@ def game_loop():
     console.print("\nKonsolowa Gra RPG", style="bold red")
     
     while True:
-        console.print("\n[bold yellow]Main Menu[/bold yellow]")
+        console.print("\n[bold yellow]=== Main Menu ===[/bold yellow]")
         console.print("1. Load a game from a save slot.")
         console.print("2. Delete a game from a save slot.")
         console.print("3. Create a new character. This will also start the game.")
@@ -27,6 +27,5 @@ def game_loop():
                 break
             case _:
                 console.print("Unknown command.")
-
 
 game_loop()

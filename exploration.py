@@ -4,7 +4,7 @@ from locations import LOCATIONS
 from combat import start_combat
 
 def exploration_menu(player):
-    console.print("\n[bold]=== Explore ===[/bold]")
+    console.print("\n[bold yellow]=== Explore ===[/bold yellow]")
     for key, loc in LOCATIONS.items():
         console.print(f"{key}. {loc['name']} - {loc['description']}")
     console.print("0. Back")
