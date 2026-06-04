@@ -1,24 +1,28 @@
-from rich import print
-from rich.console import Console
-
+from console import console
+from player_creator import create_character
+from save_menu import load_menu, delete_menu
+from game_hub import game_hub
 
 def game_loop():
-    console = Console()
-    console.print("Python Text RPG", style="bold red")
+    console.print("\nKonsolowa Gra RPG", style="bold red")
     
     while True:
-        console.print("\nYou can quit with q, quit or exit")
-        console.print("1. Load character")
-        console.print("2. Create new character")
+        console.print("\n[bold yellow]Main Menu[/bold yellow]")
+        console.print("1. Load a game from a save slot.")
+        console.print("2. Delete a game from a save slot.")
+        console.print("3. Create a new character. This will also start the game.")
+        console.print("0. Quit the game.")
         
         choice = input("> ").strip()
         
         match choice:
             case "1":
-                console.print("Not implemented.")
+                game_hub(load_menu())
             case "2":
-                console.print("Not implemented.")
-            case "quit" | "exit" | "q":
+                delete_menu()
+            case "3":
+                game_hub(create_character())
+            case "0" | "quit" | "exit" | "q":
                 console.print("Exiting.")
                 break
             case _:
