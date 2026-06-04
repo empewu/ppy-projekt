@@ -9,9 +9,9 @@ def show_slots():
     for slot in range(1, MAX_SLOTS + 1):
         info = get_save_info(slot)
         if info:
-            console.print(f"[{slot}] {info['name']}")
+            console.print(f"{slot}. {info['name']}")
         else:
-            console.print(f"[{slot}] Empty")
+            console.print(f"{slot}. Empty")
 
 def save_menu(player):
     show_slots()
