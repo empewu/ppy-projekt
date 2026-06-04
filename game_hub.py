@@ -15,10 +15,10 @@ def game_hub(player):
 
         match min_max_number("> ", min_val=1, max_val=4):
             case 1:
-                test
+                pass
                 #explore_menu(player)
             case 2:
-                test
+                pass
                 #trader_menu(player)
             case 3:
                 inventory_menu(player)

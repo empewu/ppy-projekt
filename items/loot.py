@@ -1,0 +1,1 @@
+#Plik na generyczny loot do zbierania i sprzedawania
