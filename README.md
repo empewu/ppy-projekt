@@ -5,8 +5,9 @@
 
 ## Zamysł
 
-placeholder
-gra konsolowa rpg
+Gra polega na utworzeniu postaci, w zależności od atrybutów dostaje się różne startowe przedmioty.
+Są cztery lokalizacje, każda lokalizacja ma końcowego boss-a którego trzeba pokonać aby ukończyć grę.
+
 
 ### Inspiracje
 
@@ -21,7 +22,13 @@ niewiem
 
 ## Kod
 
+Dużo ciekwaych rzeczy nie ma do powiedzenia.
+
 ```python
 def hello():
     print("Przykładowy kod")
 ```
+
+### Lokalizacje
+
+"Encountery" w lokalizacjach opierają się na generatorach.
