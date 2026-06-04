@@ -3,7 +3,7 @@ from console import console
 from utility import min_max_number
 
 def create_character():
-    console.print("[bold yellow]Character Creator[/bold yellow]")
+    console.print("[bold yellow]=== Character Creator ===[/bold yellow]")
 
     name = input("Enter your name: ").strip()
 
