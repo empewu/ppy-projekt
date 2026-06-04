@@ -1,6 +1,6 @@
 from items import TorsoArmour
 
-CopperPlate = TorsoArmour(
+CopperTorso = TorsoArmour(
     "Copper Plate",
     "A basic copper plate.",
     value = 20,
@@ -9,7 +9,7 @@ CopperPlate = TorsoArmour(
     attribute_amount = 3
     )
 
-IronPlate = TorsoArmour(
+IronTorso = TorsoArmour(
     "Iron Plate",
     "A sturdy iron plate.",
     value = 40,
@@ -18,14 +18,14 @@ IronPlate = TorsoArmour(
     attribute_amount = 5
     )
 
-ClothHood = TorsoArmour(
+ClothTorso = TorsoArmour(
     "Cloth Vest",
     "A basic cloth vest.",
     value = 10,
     defence = 0
     )
 
-LeatherHood = TorsoArmour(
+LeatherTorso = TorsoArmour(
     "Leather Vest",
     "A sturdy leather vest.",
     value = 10,
