@@ -1,6 +1,6 @@
 # inventory.py
 from console import console
-from utility import min_max_number
+from utility import min_max_number, apply_ring, remove_ring, get_total_damage, get_total_defence, STAT_COLOURS
 from items.base import Equipment
 
 def inventory_menu(player):
@@ -9,9 +9,10 @@ def inventory_menu(player):
         console.print("1. View Inventory")
         console.print("2. View Equipment")
         console.print("3. Equip Item")
+        console.print("4. Show Statistics")
         console.print("0. Back")
 
-        match min_max_number("> ", min_val=0, max_val=3):
+        match min_max_number("> ", min_val=0, max_val=4):
             case 0:
                 return
             case 1:
@@ -20,6 +21,8 @@ def inventory_menu(player):
                 show_equipment(player)
             case 3:
                 equip_item(player)
+            case 4:
+                show_stats(player)
 
 def show_inventory(player):
     console.print("\n[bold]Inventory:[/bold]")
@@ -39,9 +42,16 @@ def show_equipment(player):
 
 def equip_item(player):
     if not player.inventory:
+        console.print("\n[dim]You have nothing to equip.[/dim]")
         return
+    
     #list comprehension
     equippable_items = [item for item in player.inventory if isinstance(item, Equipment)]
+    
+    if not equippable_items:
+        console.print("\n[dim]You have no equippable items.[/dim]")
+        return
+
     console.print("\nEquip which item? (0 to cancel)")
     for i, item in enumerate(equippable_items, 1):
         console.print(f"{i}. {item.name}")
@@ -60,10 +70,12 @@ def equip_item(player):
         if player.equipment["Ring1"] is None:
             player.inventory.remove(item_equip)
             player.equipment["Ring1"] = item_equip
+            apply_ring(player, item_equip)
 
         elif player.equipment["Ring2"] is None:
             player.inventory.remove(item_equip)
             player.equipment["Ring2"] = item_equip
+            apply_ring(player, item_equip)
         
         else:
             console.print("Both ring slots are occupied.")
@@ -74,13 +86,18 @@ def equip_item(player):
                 case 0:
                     return
                 case 1:
+                    remove_ring(player, player.equipment["Ring1"])
                     player.inventory.append(player.equipment["Ring1"])
                     player.inventory.remove(item_equip)
                     player.equipment["Ring1"] = item_equip
+                    apply_ring(player, item_equip)
+
                 case 2:
+                    remove_ring(player, player.equipment["Ring2"])
                     player.inventory.append(player.equipment["Ring2"])
                     player.inventory.remove(item_equip)
                     player.equipment["Ring2"] = item_equip
+                    apply_ring(player, item_equip)
 
     else:
         if player.equipment[item_equip.slot] is not None:
@@ -94,3 +111,16 @@ def equip_item(player):
         else:
             player.inventory.remove(item_equip)
             player.equipment[item_equip.slot] = item_equip
+
+def show_stats(player):
+    #dict comprehension
+    stats_display = {stat: value for stat, value in player.statistics.items()}
+    for stat, value in stats_display.items():
+        colour = STAT_COLOURS.get(stat, "white")
+        console.print(f"[{colour}]{stat}[/{colour}]: {value}")
+    
+    console.print("[dim]Attributes affect whether or not you can equip an item. Certain items increase attributes.[/dim]")
+
+    console.print(f"\nTotal Damage: {get_total_damage(player)}")
+    console.print(f"Total Defence: {get_total_defence(player)}")
+    console.print("[dim]Defence is percentile damage reduction to damage taken. Enemies also have defence.[/dim]")

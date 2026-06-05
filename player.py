@@ -27,16 +27,18 @@ class Player:
         return {
             "name": self.name,
             "gold": self.gold,
-            "inventory": self.inventory,
+            "inventory": [item.name for item in self.inventory],
             "statistics": self.statistics,
             "healthMax": self.healthMax,
             "healthCurrent": self.healthCurrent,
-            "equipment": self.equipment,
+            "equipment": {slot: (item.name if item else None) for slot, item in self.equipment.items()},
         }
     
+
     #ładowanie gracza z save-a
     @classmethod
     def from_save(cls, data):
+        from items import ITEM_REGISTRY
         stats = data["statistics"]
         player = cls(
             name=data["name"],
@@ -46,10 +48,13 @@ class Player:
             Endurance=stats["Endurance"],
         )
         player.gold = data["gold"]
-        player.inventory = data["inventory"]
         player.healthMax = data["healthMax"]
         player.healthCurrent = data["healthCurrent"]
-        player.equipment = data["equipment"]
+        player.inventory = [ITEM_REGISTRY[name] for name in data["inventory"]]
+        player.equipment = {
+            slot: (ITEM_REGISTRY[name] if name else None)
+            for slot, name in data["equipment"].items()
+        }
         return player
 
     def is_alive(self):

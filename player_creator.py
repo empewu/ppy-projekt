@@ -59,10 +59,11 @@ def create_character():
             player.inventory.append(LeatherTorso)
         case "Intelligence":
             player.inventory.append(WoodenStaff)
+            player.inventory.append(ClothTorso)
             player.inventory.append(MagicalTalisman)
-            ClothTorso
         case "Endurance":
             player.inventory.append(WoodenStaff)
+            player.inventory.append(ClothTorso)
             player.inventory.append(WoodenShield)
 
     console.print(f"Created new character: {player.name}")

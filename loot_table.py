@@ -29,3 +29,24 @@ LOCATION_LOOT = {
     ],
 }
 
+LOCATION_REST_LOOT = {
+    "Dark Forest": [
+        (loot.coinPouch, 0.8),
+        (loot.monsterParts, 0.7),
+    ],
+    "Ancient Ruins": [
+        (loot.monsterPartsMagical, 0.1),
+        (loot.valuableGem, 0.2),
+        (loot.coinPouch, 0.4),
+    ],
+    "Dark Cave": [
+        (loot.valuableGem, 0.2),
+        (loot.goldBar, 0.1),
+        (loot.monsterParts, 0.3),
+    ],
+    "Misty Swamp": [
+        (loot.monsterParts, 0.5),
+        (loot.monsterPartsRare, 0.3),
+        (loot.monsterPartsMagical, 0.1),
+    ],
+}
