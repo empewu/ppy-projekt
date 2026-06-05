@@ -12,14 +12,14 @@ class Player:
         self.healthMax = Endurance * 5
         self.healthCurrent = self.healthMax
         self.equipment = {
-            "Head": 0,
-            "Torso": 0,
-            "Arms": 0,
-            "Legs": 0,
-            "MainHand": 0,
-            "OffHand": 0,
-            "Ring1": 0,
-            "Ring2": 0,
+            "Head": None,
+            "Torso": None,
+            "Arms": None,
+            "Legs": None,
+            "MainHand": None,
+            "OffHand": None,
+            "Ring1": None,
+            "Ring2": None,
         }
 
     #zamiana na słownik

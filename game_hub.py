@@ -16,9 +16,10 @@ def game_hub(player):
             console.print("2. Trader")
             console.print("3. Inventory & Equipment")
             console.print("4. Rest & Heal")
-            console.print("0. Save & Quit")
+            console.print("5. Save")
+            console.print("0. Quit to main menu")
 
-            match min_max_number("> ", min_val=0, max_val=4):
+            match min_max_number("> ", min_val=0, max_val=5):
                 case 1:
                     pass
                     exploration_menu(player)
@@ -27,11 +28,12 @@ def game_hub(player):
                 case 3:
                     inventory_menu(player)
                 case 4:
-                    console.print("\nYou use the time to fully [green]rest and heal[/green] your wounds.")
+                    console.print("\nYou use the time to rest and [green]heal[/green] your wounds.")
                     player.heal()
                     console.print("[dim]Health has been restored to max.[/dim]")
-                case 0:
+                case 5:
                     save_menu(player)
+                case 0:
                     break
         
         except PlayerDeadError:

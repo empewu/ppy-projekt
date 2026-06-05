@@ -62,7 +62,7 @@ def buy_menu(player, stock):
 
         for i, item in enumerate(stock, 1):
             console.print(f"{i}. {item.name} - [yellow]{int(item.value * BUY_RATE)}g[/yellow] | {item.description}")
-        console.print("1. Back")
+        console.print("0. Back")
 
         choice = min_max_number("> ", min_val=0, max_val=len(stock))
         if choice == 0:

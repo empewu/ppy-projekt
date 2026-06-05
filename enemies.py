@@ -57,7 +57,7 @@ Ghoul = Enemy(
 
 Slime = Enemy(
     name = "Slime",
-    health = 30,
+    health = 25,
     damage = 7,
     defence = 0,
     loot_table=[

@@ -22,7 +22,7 @@ ClothHood = HeadArmour(
     "Cloth Hood",
     "A basic cloth hood.",
     value = 10,
-    defence = 0
+    defence = 1
     )
 
 LeatherHood = HeadArmour(

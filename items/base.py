@@ -56,6 +56,6 @@ class OffHand(Weapon):
 #pierscienie
 class Ring(Equipment):
     def __init__(self, name, description, value, attribute_gained, attribute_value, **kwargs):
-        super().__init__(name, description, value, slot="Ring1", **kwargs)
+        super().__init__(name, description, value, slot="Ring", **kwargs)
         self.attribute_gained = attribute_gained
         self.attribute_value = attribute_value

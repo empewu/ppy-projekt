@@ -1,6 +1,10 @@
 from player import Player
 from console import console
 from utility import min_max_number, is_valid_name
+from items.mainhand import CopperSword, WoodenStaff, WoodenBow
+from items.torso import CopperTorso, ClothTorso, LeatherTorso
+from items.offhand import MagicalTalisman, WoodenShield
+
 
 def create_character():
     console.print("[bold yellow]=== Character Creator ===[/bold yellow]")
@@ -15,8 +19,8 @@ def create_character():
 
 
     console.print("\nEach character has four attributes:")
-    console.print("[red]Strength[/red] - primarly used for physical attacks")
-    console.print("[yellow]Agility[/yellow] - primarly used for ranged attacks")
+    console.print("[red]Strength[/red] - primarly used for melee physical attacks")
+    console.print("[yellow]Agility[/yellow] - primarly used for ranged phyiscal attacks")
     console.print("[blue]Intelligence[/blue] - primarly used for magical attacks")
     console.print("[green]Endurance[/green] - determines your Health Points")
     console.print("Note, the attributes also affect other things, such as whether or not you can equip an item.")
@@ -42,6 +46,28 @@ def create_character():
 
     player = Player(name, Strength, Agility, Intelligence, Endurance)
 
+    #lambda do sprawdzenia
+    #który atrybut jest największy
+    highest = max(player.statistics, key=lambda stat: player.statistics[stat])
+
+    match highest:
+        case "Strength":
+            player.inventory.append(CopperSword)
+            player.inventory.append(CopperTorso)
+        case "Agility":
+            player.inventory.append(WoodenBow)
+            player.inventory.append(LeatherTorso)
+        case "Intelligence":
+            player.inventory.append(WoodenStaff)
+            player.inventory.append(MagicalTalisman)
+            ClothTorso
+        case "Endurance":
+            player.inventory.append(WoodenStaff)
+            player.inventory.append(WoodenShield)
+
     console.print(f"Created new character: {player.name}")
+    console.print("\n[dim]Each new character stands with items in their inventory based on their attributes.[/dim]")
+    console.print("[dim]Make sure to equip them before exploring.[/dim]")
+    console.input("[dim]Press Enter to continue[/dim]")
     return player
 

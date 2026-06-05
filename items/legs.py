@@ -22,7 +22,7 @@ ClothBoots = LegsArmour(
     "Cloth Wrappings",
     "A pair of basic cloth wrappings.",
     value = 10,
-    defence = 0
+    defence = 1
     )
 
 LeatherBoots = LegsArmour(
