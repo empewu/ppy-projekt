@@ -1,4 +1,4 @@
-from items import ArmsArmour
+from items.base import ArmsArmour
 
 CopperGloves = ArmsArmour(
     "Copper Gauntlets",
@@ -22,7 +22,7 @@ ClothGloves = ArmsArmour(
     "Cloth Mittens",
     "A pair of basic cloth mittens.",
     value = 10,
-    defence = 0
+    defence = 1
     )
 
 LeatherGloves = ArmsArmour(

@@ -39,23 +39,23 @@ class LegsArmour(Armour):
 
 #bronie, mainhand i offhand
 class Weapon(Equipment):
-    def __init__(self, name, description, value, damage, defence, slot):
-        super().__init__(name, description, value, slot)
+    def __init__(self, name, description, value, damage, defence, slot, **kwargs):
+        super().__init__(name, description, value, slot, **kwargs)
         self.damage = damage
         self.defence = defence
     
 class MainHand(Weapon):
-    def __init__(self, name, description, value, damage, defence):
-        super().__init__(name, description, value, damage, defence, slot="MainHand")
+    def __init__(self, name, description, value, damage, defence, **kwargs):
+        super().__init__(name, description, value, damage, defence, slot="MainHand", **kwargs)
 
 class OffHand(Weapon):
-    def __init__(self, name, description, value, damage, defence):
-        super().__init__(name, description, value, damage, defence, slot="OffHand")
+    def __init__(self, name, description, value, damage, defence, **kwargs):
+        super().__init__(name, description, value, damage, defence, slot="OffHand", **kwargs)
 
 
 #pierscienie
 class Ring(Equipment):
-    def __init__(self, name, description, value, attribute_gained, attribute_value):
-        super().__init__(name, description, value, slot="Ring1")
+    def __init__(self, name, description, value, attribute_gained, attribute_value, **kwargs):
+        super().__init__(name, description, value, slot="Ring", **kwargs)
         self.attribute_gained = attribute_gained
         self.attribute_value = attribute_value

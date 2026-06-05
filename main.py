@@ -17,13 +17,16 @@ def game_loop():
         
         match choice:
             case "1":
-                game_hub(load_menu())
+                player = load_menu()
+                if player is None:
+                    continue
+                game_hub(player)
             case "2":
                 delete_menu()
             case "3":
                 game_hub(create_character())
             case "0" | "quit" | "exit" | "q":
-                console.print("Exiting.")
+                console.print("[dim]Exiting...[/dim]")
                 break
             case _:
                 console.print("Unknown command.")

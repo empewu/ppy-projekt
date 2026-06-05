@@ -12,12 +12,12 @@ def save_game(player, slot):
     os.makedirs(SAVE_DIR, exist_ok=True)#
     with open(get_save_path(slot), "w") as f:
         json.dump(player.to_dict(), f, indent=4)
-    console.print(f"Player named {player.name} saved to slot {slot}!")
+    console.print(f"Player named {player.name} [green]saved[/green] to slot {slot}.")
 
 def load_game(slot):
     path = get_save_path(slot)
     if not os.path.exists(path):
-        console.print(f"No save found in slot {slot}.")
+        console.print(f"[dim]No save found in slot {slot}.[/dim]")
         return None
     with open(path, "r") as f:
         data = json.load(f)
@@ -37,6 +37,6 @@ def delete_save(slot):
     path = get_save_path(slot)
     if os.path.exists(path):
         os.remove(path)
-        print(f"Slot {slot} deleted.")
+        console.print(f"Slot {slot} [red]deleted[/red].")
     else:
-        print(f"No save in slot {slot}.")
+        console.print(f"[dim]No save in slot {slot}.[/dim]")

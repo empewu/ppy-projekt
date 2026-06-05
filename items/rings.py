@@ -1,4 +1,4 @@
-from items import Ring
+from items.base import Ring
 
 StrengthRing = Ring(
     "Red Ring",

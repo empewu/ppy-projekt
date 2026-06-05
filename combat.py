@@ -1,7 +1,8 @@
-from utility import roll_loot, min_max_number
+from utility import roll_loot, min_max_number, require_alive, get_total_damage, get_total_defence
 from console import console
 from exceptions import PlayerDeadError
 
+@require_alive
 def start_combat(player, enemy):
     console.print(f"\n[bold red]A {enemy.name} appears![/bold red]")
 
@@ -26,32 +27,16 @@ def start_combat(player, enemy):
     return "victory"
 
 def attack(player, enemy):
-    damage_dealt = (get_total_damage(player) * (100 / 100 + enemy.defence))
+    damage_dealt = int(get_total_damage(player) * (100 / (100 + enemy.defence)))
     enemy.health -= damage_dealt
     console.print(f"You deal [red]{damage_dealt}[/red] damage to {enemy.name}.")
 
     if enemy.health <= 0:
         return
 
-    damage_taken = (enemy.damage * (100 / 100 + get_total_defence(player)))
+    damage_taken = int(enemy.damage * (100 / (100 + get_total_defence(player))))
     player.healthCurrent -= damage_taken
     console.print(f"{enemy.name} deals [red]{damage_taken}[/red] damage to you.")
-
-def get_total_defence(player):
-    """Adds up defence from all equipped items."""
-    total = 0
-    for item in player.equipment.values():
-        if item and hasattr(item, "defence"):
-            total += item.defence
-    return total
-
-def get_total_damage(player):
-    """Adds up damage from all equipped items."""
-    total = 0
-    for item in player.equipment.values():
-        if item and hasattr(item, "damage"):
-            total += item.damage
-    return total
 
 def give_loot(player, enemy):
     dropped = roll_loot(enemy.loot_table)

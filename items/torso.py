@@ -1,4 +1,4 @@
-from items import TorsoArmour
+from items.base import TorsoArmour
 
 CopperTorso = TorsoArmour(
     "Copper Plate",
@@ -22,7 +22,7 @@ ClothTorso = TorsoArmour(
     "Cloth Vest",
     "A basic cloth vest.",
     value = 10,
-    defence = 0
+    defence = 5
     )
 
 LeatherTorso = TorsoArmour(
