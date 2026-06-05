@@ -4,6 +4,7 @@ from save_menu import save_menu
 from inventory import inventory_menu
 from exploration import exploration_menu
 from exceptions import PlayerDeadError
+from trader import trader_menu
 
 def game_hub(player):
     while True:
@@ -22,8 +23,7 @@ def game_hub(player):
                     pass
                     exploration_menu(player)
                 case 2:
-                    pass
-                    #trader_menu(player)
+                    trader_menu(player)
                 case 3:
                     inventory_menu(player)
                 case 4:

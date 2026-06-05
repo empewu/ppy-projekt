@@ -1,7 +1,8 @@
-from utility import roll_loot, min_max_number
+from utility import roll_loot, min_max_number, require_alive
 from console import console
 from exceptions import PlayerDeadError
 
+@require_alive
 def start_combat(player, enemy):
     console.print(f"\n[bold red]A {enemy.name} appears![/bold red]")
 

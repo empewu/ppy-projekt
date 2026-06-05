@@ -1,5 +1,7 @@
 from console import console
+from exceptions import PlayerDeadError
 import random
+import re
 
 def min_max_number(prompt, min_val=None, max_val=None):
     """Used for inputting a number and checking if its between min_val and max_val."""
@@ -35,3 +37,17 @@ def roll_loot(loot_table):
         if random.random() < chance:
             loot.append(item)
     return loot
+
+#regex
+def is_valid_name(name):
+    return bool(re.match(r"^[a-zA-Z\s\-]{2,20}$", name))
+
+
+#dekorator
+#troche na siłe wsadzony
+def require_alive(func):
+    def wrapper(player, *args, **kwargs):
+        if not player.is_alive():
+            raise PlayerDeadError("Player is dead!")
+        return func(player, *args, **kwargs)
+    return wrapper

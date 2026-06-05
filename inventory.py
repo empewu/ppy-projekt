@@ -22,6 +22,8 @@ def inventory_menu(player):
 
 def show_inventory(player):
     console.print("\n[bold]Inventory:[/bold]")
+    #lambda aby posortować ekwipunek
+    player.inventory.sort(key=lambda item: item.value)
     if not player.inventory:
         console.print("[dim]Empty[/dim]")
         return

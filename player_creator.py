@@ -1,11 +1,18 @@
 from player import Player
 from console import console
-from utility import min_max_number
+from utility import min_max_number, is_valid_name
 
 def create_character():
     console.print("[bold yellow]=== Character Creator ===[/bold yellow]")
 
-    name = input("Enter your name: ").strip()
+    console.print("[dim]Only letters, spaces and hyphens are allowed. A name must be 2-20 characters[/dim]")
+
+    while True:
+        name = input("Enter your name: ").strip()
+        if(is_valid_name(name)):
+            break
+        console.print("[red]Invalid name.[/red]")
+
 
     console.print("\nEach character has four attributes:")
     console.print("[red]Strength[/red] - primarly used for physical attacks")
@@ -37,3 +44,4 @@ def create_character():
 
     console.print(f"Created new character: {player.name}")
     return player
+
