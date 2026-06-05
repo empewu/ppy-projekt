@@ -1,14 +1,14 @@
 # Projekt PPY - Konsolowa Gra RPG
-1. Zamysł
-2. Jak Uruchomić
-3. Kod
 
 ## Zamysł
 
-Gra polega na utworzeniu postaci, w zależności od atrybutów dostaje się różne startowe przedmioty.
-Końca gry nie ma, gra się aż się komuś znudzi, 
+Gra polega na przechodzeniu przez lokalizacje i zwalczaniu potworów oraz zbieraniu łupu.
+Zaczyna się od utworzeniu postaci, w zależności od atrybutów dostaje się różne startowe przedmioty.
+Końca gry nie ma, gra się aż się graczu znudzi, 
 Są cztery lokalizacje, każda ma różnych przeciwników oraz różne szanse na zdobywany łup.
-Oryginalnie gra miała posiadać końcowego bossa w każdej lokalizacji, 
+Oryginalnie gra miała posiadać końcowego bossa w każdej lokalizacji, w końcu tego nie zrobiłem bo uznałem że to, co just jest,
+powinno być wystarczające. Oraz fakt że nie miałem dobrych pomysłów na końcowych przeciwników.
+"Golem" w jednej z lokalizacji jest zastępnikiem typowego bossa.
 
 ### Inspiracje
 
