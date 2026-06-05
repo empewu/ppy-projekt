@@ -5,16 +5,16 @@ import items.offhand as offhand
 
 LOCATION_LOOT = {
     "Dark Forest": [
-        (loot.coinPouch, 0.8),
-        (loot.monsterParts, 0.5),
-        (mainhand.IronSword, 0.2),
+        (loot.coinPouch, 0.3),
+        (loot.monsterParts, 0.2),
+        (mainhand.IronSword, 0.1),
         (mainhand.IronCrossbow, 0.1),
     ],
     "Ancient Ruins": [
-        (loot.coinPouch, 0.6),
-        (loot.valuableGem, 0.15),
-        (loot.monsterPartsRare, 0.2),
-        (helmet.IronHelmet, 0.15),
+        (loot.coinPouch, 0.3),
+        (loot.valuableGem, 0.1),
+        (loot.monsterPartsRare, 0.1),
+        (helmet.IronHelmet, 0.1),
     ],
     "Dark Cave": [
         (loot.coinPouch, 0.2),
@@ -22,31 +22,29 @@ LOCATION_LOOT = {
         (loot.goldBar, 0.1),
     ],
     "Misty Swamp": [
-        (loot.coinPouch, 0.5),
-        (loot.monsterPartsMagical, 0.3),
-        (offhand.WoodenShield, 0.2),
-        (offhand.MagicalTalisman, 0.2),
+        (loot.coinPouch, 0.3),
+        (loot.monsterPartsMagical, 0.1),
+        (offhand.WardingTalisman, 0.1),
+        (offhand.MagicalTalisman, 0.1),
     ],
 }
 
 LOCATION_REST_LOOT = {
     "Dark Forest": [
-        (loot.coinPouch, 0.8),
-        (loot.monsterParts, 0.7),
+        (loot.coinPouch, 0.3),
+        (loot.monsterParts, 0.1),
     ],
     "Ancient Ruins": [
-        (loot.monsterPartsMagical, 0.1),
         (loot.valuableGem, 0.2),
-        (loot.coinPouch, 0.4),
+        (loot.coinPouch, 0.3),
     ],
     "Dark Cave": [
         (loot.valuableGem, 0.2),
         (loot.goldBar, 0.1),
-        (loot.monsterParts, 0.3),
     ],
     "Misty Swamp": [
-        (loot.monsterParts, 0.5),
-        (loot.monsterPartsRare, 0.3),
+        (loot.monsterParts, 0.3),
+        (loot.monsterPartsRare, 0.2),
         (loot.monsterPartsMagical, 0.1),
     ],
 }
