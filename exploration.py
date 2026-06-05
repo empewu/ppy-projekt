@@ -44,6 +44,7 @@ def run_location(player, location):
                     return
 
             case "treasure":
+                console.print("You encounter a site of interest.")
                 loot = roll_loot(encounter["loot"])
                 if loot:
                     for item in loot:

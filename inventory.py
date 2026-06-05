@@ -99,6 +99,7 @@ def equip_item(player):
                     player.equipment["Ring2"] = item_equip
                     apply_ring(player, item_equip)
 
+
     else:
         if player.equipment[item_equip.slot] is not None:
             console.print("There is already an item equipped, do you want to swap the items? (0 to cancel, 1 to continue)")
@@ -111,6 +112,8 @@ def equip_item(player):
         else:
             player.inventory.remove(item_equip)
             player.equipment[item_equip.slot] = item_equip
+
+    console.print(f"[dim]Equipped {item_equip}.[/dim]")
 
 def show_stats(player):
     #dict comprehension

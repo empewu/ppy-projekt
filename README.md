@@ -12,13 +12,13 @@ Oryginalnie gra miała posiadać końcowego bossa w każdej lokalizacji,
 
 ### Inspiracje
 
-Różne gry w które grałem, ale głównie. CRPGi i podobne, gry posiadające ekwipunek i specyficzne sloty na ekwipunek.
+Różne gry w które grałem, ale głównie. cRPGi i podobne, gry posiadające ekwipunek i specyficzne sloty na ekwipunek.
 Np. większość gier MMORPG (WoW, SWtOR) coś takiego ma.
 
 ## Jak Uruchomić
 
-Gra wymaga biblioteki [**Rich**](https://github.com/textualize/rich)
-Oraz wersji **Python 3.10** lub nowszej.
+Gra wymaga biblioteki [**Rich**](https://github.com/textualize/rich),
+oraz wersji **Python 3.10** lub nowszej.
 
 Oczywiście można zainstalować poprzez:
 ```bash

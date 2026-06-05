@@ -12,12 +12,12 @@ def game_hub(player):
             console.print(f"\n[bold yellow]=== {player.name} ===[/bold yellow]")
             console.print(f"[green]HP: {player.healthCurrent}/{player.healthMax}[/green] | [yellow]Gold: {player.gold}[/yellow]")
             console.print("\n[bold]What do you do?[/bold]")
-            console.print("1. Explore")
-            console.print("2. Trader")
-            console.print("3. Inventory & Equipment")
-            console.print("4. Rest & Heal")
-            console.print("5. Save")
-            console.print("0. Quit to main menu")
+            console.print("1. Explore.")
+            console.print("2. Trader.")
+            console.print("3. Inventory & Equipment.")
+            console.print("4. Rest & Heal.")
+            console.print("5. Save.")
+            console.print("0. Quit to main menu.")
 
             match min_max_number("> ", min_val=0, max_val=5):
                 case 1:

@@ -1,9 +1,11 @@
 from utility import roll_loot, min_max_number, require_alive, get_total_damage, get_total_defence
 from console import console
 from exceptions import PlayerDeadError
+import copy
 
 @require_alive
 def start_combat(player, enemy):
+    enemy = copy.copy(enemy)
     console.print(f"\n[bold red]A {enemy.name} appears![/bold red]")
 
     while player.is_alive() and enemy.health > 0:
