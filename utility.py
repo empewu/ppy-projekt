@@ -62,10 +62,12 @@ def require_alive(func):
 def apply_ring(player, ring):
     if ring.attribute_gained is not None:
         player.statistics[ring.attribute_gained] += ring.attribute_value
+        player.recompute_max_health()
 
 def remove_ring(player, ring):
     if ring.attribute_gained is not None:
         player.statistics[ring.attribute_gained] -= ring.attribute_value
+        player.recompute_max_health()
 
 def get_total_defence(player):
     """Adds up defence from all equipped items."""

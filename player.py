@@ -9,7 +9,7 @@ class Player:
             "Intelligence": Intelligence,
             "Endurance": Endurance,
         }
-        self.healthMax = Endurance * 5
+        self.healthMax = 20 + Endurance * 5
         self.healthCurrent = self.healthMax
         self.equipment = {
             "Head": None,
@@ -48,14 +48,22 @@ class Player:
             Endurance=stats["Endurance"],
         )
         player.gold = data["gold"]
-        player.healthMax = data["healthMax"]
         player.healthCurrent = data["healthCurrent"]
         player.inventory = [ITEM_REGISTRY[name] for name in data["inventory"]]
         player.equipment = {
             slot: (ITEM_REGISTRY[name] if name else None)
             for slot, name in data["equipment"].items()
         }
+        # Derive max health from the (already ring-adjusted) Endurance stat so
+        # older saves and Endurance items are reflected correctly.
+        player.recompute_max_health()
         return player
+
+    #maksymalne zdrowie zależy od wytrzymałości (Endurance)
+    def recompute_max_health(self):
+        self.healthMax = 20 + self.statistics["Endurance"] * 5
+        if self.healthCurrent > self.healthMax:
+            self.healthCurrent = self.healthMax
 
     def is_alive(self):
         return self.healthCurrent > 0
