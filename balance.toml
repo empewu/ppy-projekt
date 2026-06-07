@@ -12,6 +12,15 @@
 #    * Table keys are the item/enemy *display name* (the registry key).
 # =============================================================================
 
+[combat]
+stat_damage_scaling = 3   # damage added per point of a weapon's governing stat
+endurance_defence   = 2   # effective defence added per point of Endurance
+
+[combat.multipliers]
+weakness   = 1.3   # damage multiplier when an enemy is weak to the damage type
+resistance = 0.7   # damage multiplier when an enemy resists the damage type
+neutral    = 1.0   # damage multiplier otherwise
+
 [health]
 base          = 20   # health every character starts with
 per_endurance = 5    # extra max health per point of Endurance
@@ -33,6 +42,8 @@ ring_bonus = 2   # attribute points granted by any stat ring
 damage = 10
 defence = 4
 value = 20
+type = "melee"
+stat = "Strength"
 req_stat = "Strength"
 req_amount = 2
 
@@ -40,6 +51,8 @@ req_amount = 2
 damage = 20
 defence = 8
 value = 40
+type = "melee"
+stat = "Strength"
 req_stat = "Strength"
 req_amount = 3
 
@@ -47,6 +60,8 @@ req_amount = 3
 damage = 30
 defence = 0
 value = 50
+type = "melee"
+stat = "Strength"
 req_stat = "Strength"
 req_amount = 5
 
@@ -54,11 +69,15 @@ req_amount = 5
 damage = 5
 defence = 2
 value = 10
+type = "magic"
+stat = "Intelligence"
 
 [weapons."Wooden Bow"]
 damage = 15
 defence = 0
 value = 30
+type = "ranged"
+stat = "Agility"
 req_stat = "Agility"
 req_amount = 2
 
@@ -66,13 +85,19 @@ req_amount = 2
 damage = 30
 defence = 0
 value = 40
+type = "ranged"
+stat = "Agility"
 req_stat = "Agility"
 req_amount = 4
 
+# Offhand. The talisman deals flat magic damage (no `stat` = does not scale),
+# so an Intelligence build's scaling comes from a magic mainhand, not by
+# stacking two magic items.
 [weapons."Magical Talisman"]
 damage = 15
 defence = 0
 value = 100
+type = "magic"
 req_stat = "Intelligence"
 req_amount = 4
 
@@ -95,10 +120,13 @@ value = 100
 req_stat = "Strength"
 req_amount = 6
 
+# The tank's offensive outlet: a shield whose bash scales with Endurance.
 [weapons."Spiked Shield"]
 damage = 10
 defence = 15
 value = 75
+type = "melee"
+stat = "Endurance"
 req_stat = "Endurance"
 req_amount = 4
 

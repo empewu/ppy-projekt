@@ -18,7 +18,21 @@ with open(_PATH, "rb") as _f:
     _DATA = tomllib.load(_f)
 
 
+# --- damage types ------------------------------------------------------------
+MELEE = "melee"
+RANGED = "ranged"
+MAGIC = "magic"
+PHYSICAL = "physical"  # shorthand for "melee and ranged" in weakness/resistance
+_PHYSICAL_TYPES = {MELEE, RANGED}
+
+
 # --- scalar parameters -------------------------------------------------------
+STAT_DAMAGE_SCALING = _DATA["combat"]["stat_damage_scaling"]
+ENDURANCE_DEFENCE = _DATA["combat"]["endurance_defence"]
+WEAKNESS_MULT = _DATA["combat"]["multipliers"]["weakness"]
+RESISTANCE_MULT = _DATA["combat"]["multipliers"]["resistance"]
+NEUTRAL_MULT = _DATA["combat"]["multipliers"]["neutral"]
+
 HP_BASE = _DATA["health"]["base"]
 HP_PER_ENDURANCE = _DATA["health"]["per_endurance"]
 
@@ -46,9 +60,21 @@ def weapon_kwargs(name):
         value=s["value"],
         damage=s["damage"],
         defence=s["defence"],
+        damage_type=s.get("type"),
+        governing_stat=s.get("stat"),
         attribute_required=s.get("req_stat"),
         attribute_amount=s.get("req_amount", 0),
     )
+
+
+def type_matches(damage_type, category):
+    """True if an attack's ``damage_type`` falls under a weakness/resistance
+    ``category`` (which may be a specific type or the "physical" shorthand)."""
+    if category is None or damage_type is None:
+        return False
+    if category == PHYSICAL:
+        return damage_type in _PHYSICAL_TYPES
+    return damage_type == category
 
 
 def armour_kwargs(name):
@@ -83,6 +109,7 @@ def enemy_kwargs(name):
 # Fail loudly at startup on a malformed balance.toml rather than silently
 # breaking something mid-game.
 _VALID_STATS = {"Strength", "Agility", "Intelligence", "Endurance"}
+_VALID_TYPES = {MELEE, RANGED, MAGIC}
 
 
 def _validate():
@@ -92,6 +119,10 @@ def _validate():
                 raise ValueError(f"balance.toml: weapon {name!r} missing '{key}'")
         if "req_stat" in s and s["req_stat"] not in _VALID_STATS:
             raise ValueError(f"balance.toml: weapon {name!r} has invalid req_stat {s['req_stat']!r}")
+        if "type" in s and s["type"] not in _VALID_TYPES:
+            raise ValueError(f"balance.toml: weapon {name!r} has invalid type {s['type']!r}")
+        if "stat" in s and s["stat"] not in _VALID_STATS:
+            raise ValueError(f"balance.toml: weapon {name!r} has invalid stat {s['stat']!r}")
 
     for name, s in ARMOUR.items():
         for key in ("defence", "value"):
