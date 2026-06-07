@@ -17,6 +17,8 @@ WoodenStaff = _mainhand("Wooden Staff", "A basic wooden staff. Barely better tha
 
 RunedStaff = _mainhand("Runed Staff", "A staff carved with glowing runes that focus magical power.")
 
+SpikedClub = _mainhand("Spiked Club", "A crude, heavy club studded with iron. Brutally simple, but it takes a strong back to swing.")
+
 WoodenBow = _mainhand("Wooden Bow", "A basic wooden bow.")
 
 IronCrossbow = _mainhand("Iron Crossbow", "A sturdy crossbow with an iron mechanism.")

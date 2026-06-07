@@ -49,7 +49,7 @@ version = 2   # bumped when the save format / balance changes meaningfully
 Strength     = ["Copper Sword", "Copper Plate"]
 Agility      = ["Wooden Bow", "Leather Vest"]
 Intelligence = ["Wooden Staff", "Cloth Vest", "Magical Talisman"]
-Endurance    = ["Wooden Staff", "Cloth Vest", "Spiked Shield"]
+Endurance    = ["Spiked Club", "Cloth Vest", "Spiked Shield"]
 
 
 # ============================ WEAPONS ========================================
@@ -89,6 +89,18 @@ defence = 2
 value = 10
 type = "magic"
 stat = "Intelligence"
+
+# A brutish Endurance-gated mainhand so a tank need not wield a wizard's staff.
+# Deliberately flat (no `stat`): the tank's damage scaling lives on its
+# Endurance shield, and a second Endurance-scaling weapon would double-dip.
+# The Endurance requirement makes it effectively tank-only.
+[weapons."Spiked Club"]
+damage = 14
+defence = 0
+value = 25
+type = "melee"
+req_stat = "Endurance"
+req_amount = 3
 
 # Mid-tier magic mainhand: gives Intelligence builds a damage upgrade path,
 # mirroring Iron Sword (melee) and Iron Crossbow (ranged).
