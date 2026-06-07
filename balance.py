@@ -39,6 +39,7 @@ HP_PER_ENDURANCE = _DATA["health"]["per_endurance"]
 TRADER_BUY_RATE = _DATA["economy"]["trader_buy_rate"]
 TRADER_SELL_RATE = _DATA["economy"]["trader_sell_rate"]
 TRADER_STOCK_SIZE = _DATA["economy"]["trader_stock_size"]
+TRADER_REROLL_COST = _DATA["economy"]["trader_reroll_cost"]
 HEAL_COST_PER_HP = _DATA["economy"]["heal_cost_per_hp"]
 
 RING_BONUS = _DATA["progression"]["ring_bonus"]
@@ -183,6 +184,9 @@ def _validate():
         ingredients = r.get("ingredients")
         if not ingredients or not all(isinstance(c, int) and c > 0 for c in ingredients.values()):
             raise ValueError(f"balance.toml: recipe {name!r} needs positive integer ingredient counts")
+
+    if not isinstance(TRADER_REROLL_COST, int) or TRADER_REROLL_COST < 0:
+        raise ValueError("balance.toml: economy.trader_reroll_cost must be a non-negative integer")
 
 
 _validate()

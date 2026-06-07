@@ -3,6 +3,20 @@ from utility import min_max_number, encounter_generator, roll_loot, require_aliv
 from locations import LOCATIONS
 from loot_table import LOCATION_REST_LOOT
 from combat import start_combat
+from equipment import equip_menu
+
+
+def _continue_or_equip(player):
+    """Between encounters: press Enter to proceed, or 'e' to manage equipment
+    (so a build can swap weapons/armour to suit what is coming)."""
+    while True:
+        choice = console.input(
+            "[dim]Press Enter to continue, or 'e' to change equipment.[/dim] "
+        ).strip().lower()
+        if choice == "e":
+            equip_menu(player)
+        else:
+            return
 
 def exploration_menu(player):
     console.print("\n[bold yellow]=== Explore ===[/bold yellow]")
@@ -37,7 +51,7 @@ def run_location(player, location):
             break
 
         console.print("\n[dim]You press deeper...[/dim]")
-        console.input("[dim]Press Enter to continue[/dim]")
+        _continue_or_equip(player)
 
         match encounter["type"]:
             case "combat":
