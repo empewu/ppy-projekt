@@ -13,3 +13,5 @@ IronTorso = _torso("Iron Plate", "A sturdy iron plate.")
 ClothTorso = _torso("Cloth Vest", "A basic cloth vest.")
 
 LeatherTorso = _torso("Leather Vest", "A sturdy leather vest.")
+
+WardenPlate = _torso("Warden Plate", "A massive plated cuirass that only the tough can bear.")

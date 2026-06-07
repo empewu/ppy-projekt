@@ -159,6 +159,17 @@ stat = "Endurance"
 req_stat = "Endurance"
 req_amount = 4
 
+# Tier-2 Endurance offhand: the tank's damage upgrade. Req 6 (a maxed
+# Endurance plus a ring), mirroring the Tower Shield's Strength-6 gate.
+[weapons."Spiked Tower Shield"]
+damage = 16
+defence = 20
+value = 120
+type = "melee"
+stat = "Endurance"
+req_stat = "Endurance"
+req_amount = 6
+
 
 # ============================ ARMOUR =========================================
 #  Head / Torso / Arms / Legs pieces. Fields: defence, value,
@@ -252,6 +263,33 @@ defence = 5
 value = 10
 req_stat = "Agility"
 req_amount = 2
+
+# Warden line: heavy armour gated by Endurance, giving the tank build the
+# defensive progression that the Strength (copper/iron) and Agility (leather)
+# lines give those builds. Roughly Iron-tier defence, Endurance-gated.
+[armour."Warden Helm"]
+defence = 8
+value = 40
+req_stat = "Endurance"
+req_amount = 4
+
+[armour."Warden Plate"]
+defence = 16
+value = 50
+req_stat = "Endurance"
+req_amount = 5
+
+[armour."Warden Gauntlets"]
+defence = 6
+value = 30
+req_stat = "Endurance"
+req_amount = 4
+
+[armour."Warden Greaves"]
+defence = 6
+value = 30
+req_stat = "Endurance"
+req_amount = 4
 
 
 # ============================ RINGS ==========================================

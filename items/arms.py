@@ -13,3 +13,5 @@ IronGloves = _arms("Iron Gauntlets", "A pair of sturdy iron gauntlets.")
 ClothGloves = _arms("Cloth Mittens", "A pair of basic cloth mittens.")
 
 LeatherGloves = _arms("Leather Gloves", "A pair of sturdy leather gloves.")
+
+WardenGauntlets = _arms("Warden Gauntlets", "A pair of heavy plated gauntlets that only the tough can bear.")

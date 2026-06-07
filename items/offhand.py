@@ -15,3 +15,5 @@ WoodenShield = _offhand("Wooden Shield", "A sturdy wooden shield.")
 TowerShield = _offhand("Tower Shield", "A massive iron shield.")
 
 SpikedShield = _offhand("Spiked Shield", "A shield covered with spikes, both on the inside and outside.")
+
+SpikedTowerShield = _offhand("Spiked Tower Shield", "A massive tower shield lined with cruel spikes. Only the hardy can wield it.")

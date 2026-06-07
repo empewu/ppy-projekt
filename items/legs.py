@@ -13,3 +13,5 @@ IronBoots = _legs("Iron Greaves", "A pair of sturdy iron greaves.")
 ClothBoots = _legs("Cloth Wrappings", "A pair of basic cloth wrappings.")
 
 LeatherBoots = _legs("Leather Boots", "A pair of sturdy leather boots.")
+
+WardenGreaves = _legs("Warden Greaves", "A pair of heavy plated greaves that only the tough can bear.")

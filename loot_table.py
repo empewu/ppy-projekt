@@ -16,6 +16,7 @@ LOCATION_LOOT = {
         (loot.valuableGem, 0.1),
         (loot.monsterPartsRare, 0.1),
         (helmet.IronHelmet, 0.1),
+        (offhand.SpikedTowerShield, 0.1),
     ],
     "Dark Cave": [
         (loot.coinPouch, 0.2),

@@ -13,3 +13,5 @@ IronHelmet = _helmet("Iron Helmet", "A sturdy iron helmet.")
 ClothHood = _helmet("Cloth Hood", "A basic cloth hood.")
 
 LeatherHood = _helmet("Leather Hood", "A sturdy leather hood.")
+
+WardenHelm = _helmet("Warden Helm", "A heavy plated helm that only the tough can bear.")
