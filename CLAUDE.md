@@ -51,15 +51,22 @@ Gameplay modules sit on top of that data layer:
   stat scaling, then type matchup, then enemy-defence mitigation),
   `get_total_defence` (gear + Endurance), `describe_matchup` (the weakness/
   resistance hint), `roll_loot`, the `require_alive` decorator, ring apply/remove.
-- `combat.py` — the fight loop: Attack / Use Item / Flee. Using an item costs the
-  turn (the enemy still strikes). Fight-scoped buffs (`damage_bonus`,
-  `damage_reduction`) reset when the fight ends.
+- `combat.py` — the fight loop: Attack / Use Item / Swap Weapon / Flee. Using an
+  item or swapping a weapon costs the turn (the enemy still strikes). Fight-scoped
+  buffs (`damage_bonus`, `damage_reduction`) reset when the fight ends. Damage is
+  recomputed from `player.equipment` each turn, so a mid-fight swap takes effect
+  immediately.
 - `consumables.py` — shared `grouped_consumables` / `apply_consumable` /
   `use_item_menu`, used by both combat and the inventory menu.
+- `equipment.py` — shared `equip_from_inventory` / `equip_menu` (attribute check,
+  ring slots, swap-back). Used by the hub inventory menu, the between-encounter
+  step in `exploration.py`, and the in-combat weapon swap.
 - `alchemy.py` — the hub crafting menu (consumes monster parts per `RECIPES`).
 - `game_hub.py` — the main hub menu (Explore / Trader / Inventory / Rest /
   Alchemy / Save). `exploration.py`, `trader.py`, `inventory.py`, `save_menu.py`
   are the sub-menus. `locations.py` + `loot_table.py` define zones/encounters.
+  The trader (`trader.py`) weights its stock toward gear the player can use and
+  that fits their power tier, and offers a paid reroll (`trader_reroll_cost`).
 - `driver.py` — `GameDriver` helper used by the menus for input loops.
 
 ## Combat model (so balance edits make sense)
