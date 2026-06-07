@@ -1,151 +1,224 @@
 #!/usr/bin/env python3
-"""Self-contained controller: spawns the RPG, loads slot 1, hunts the trader for
-defensive gear, equips it, saves, and exits. Synchronous over pipes -> robust."""
-import subprocess, threading, time, re, sys
+"""Drive the text RPG (``main.py``) programmatically over pipes.
 
-CWD = "/home/user/ppy-projekt"
-proc = subprocess.Popen(["python3", "-u", "main.py"],
-                        stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                        stderr=subprocess.STDOUT, text=True, bufsize=1, cwd=CWD)
-buf = ""
-lock = threading.Lock()
+The game is a synchronous, menu-driven console app. Running it as a child
+process with piped stdin/stdout lets us script it reliably -- far more robust
+than poking a detached background process through a FIFO.
 
-def _reader():
-    global buf
-    for ch in iter(lambda: proc.stdout.read(1), ""):
-        with lock:
-            buf += ch
-threading.Thread(target=_reader, daemon=True).start()
+:class:`GameDriver` provides the low-level primitives (send a menu choice, wait
+for a prompt, read the current menu); the module-level helpers build
+task-level actions (load a save, shop the trader, equip an item) on top of it.
 
-def snap():
-    with lock:
-        return buf
+Run directly for a small demo that loads a save and prints its character sheet::
 
-def clear():
-    global buf
-    with lock:
-        buf = ""
+    python3 driver.py [slot]   # slot defaults to 1
+"""
+from __future__ import annotations
 
-def wait_for(sub, timeout=15):
-    end = time.time() + timeout
-    while time.time() < end:
-        if sub in snap():
-            return True
-        if proc.poll() is not None:
-            return False
-        time.sleep(0.03)
-    return False
+import os
+import re
+import subprocess
+import sys
+import threading
+import time
 
-def send(x):
-    proc.stdin.write(x + "\n")
-    proc.stdin.flush()
+GAME_DIR = os.path.dirname(os.path.abspath(__file__))
 
-def last_buy_block():
-    s = snap()
-    i = s.rfind("=== Buy ===")
-    return s[i:] if i >= 0 else ""
 
-def stock_index(block, name):
-    m = re.search(r"^(\d+)\.\s+" + re.escape(name) + r"\s+-\s", block, re.M)
-    return m.group(1) if m else None
+class GameDriver:
+    """Spawn ``main.py`` and talk to it over stdin/stdout.
 
-TARGETS = ["Copper Plate", "Iron Gauntlets", "Iron Greaves"]
-got = {t: False for t in TARGETS}
-log = []
+    Usable as a context manager so the child process is always cleaned up::
 
-# --- main menu -> load slot 1 ---
-if not wait_for("Quit the game"):
-    print("ERR: no main menu"); sys.exit(1)
-clear(); send("1")                      # Load a game
-wait_for("Load which slot")
-clear(); send("1")                      # slot 1
-if not wait_for("What do you do?"):
-    print("ERR: load failed:\n", snap()[-400:]); sys.exit(1)
-log.append("Loaded slot 1.")
+        with GameDriver() as game:
+            load_game(game, slot=1)
+            ...
+    """
 
-# --- enter trader buy ---
-clear(); send("2"); wait_for("1. Buy")
-clear(); send("1"); wait_for("0. Back")
+    def __init__(self, cwd: str = GAME_DIR):
+        self._proc = subprocess.Popen(
+            ["python3", "-u", "main.py"],
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT, text=True, bufsize=1, cwd=cwd,
+        )
+        self._buf = ""
+        self._lock = threading.Lock()
+        threading.Thread(target=self._pump, daemon=True).start()
 
-ROLLS = 60
-for r in range(1, ROLLS + 1):
-    blk = last_buy_block()
-    for name in TARGETS:
-        if got[name]:
-            continue
-        idx = stock_index(blk, name)
-        if idx:
-            clear(); send(idx)
-            if wait_for("Bought"):
-                got[name] = True
-                log.append(f"Bought {name} (roll {r}).")
-                wait_for("0. Back")     # buy menu reprints
-                blk = last_buy_block()
-    if all(got.values()):
-        break
-    # re-roll: buy -> back -> leave -> hub -> trader -> buy
-    clear(); send("0"); wait_for("1. Buy")        # trader menu
-    clear(); send("0"); wait_for("What do you do?")  # hub
-    clear(); send("2"); wait_for("1. Buy")        # trader
-    clear(); send("1"); wait_for("0. Back")       # buy (new stock)
+    # -- context manager ------------------------------------------------
+    def __enter__(self) -> "GameDriver":
+        return self
 
-# leave trader -> hub
-clear(); send("0"); wait_for("1. Buy")
-clear(); send("0"); wait_for("What do you do?")
+    def __exit__(self, *exc) -> None:
+        self.close()
 
-# --- equip the acquired pieces (by name; swap-confirm where needed) ---
-def equip_by_name(name):
-    clear(); send("3"); wait_for("Equip Item")        # inventory menu
-    clear(); send("3"); wait_for("Equip which item")  # equip list
-    blk = snap()[snap().rfind("Equip which item"):]
-    m = re.search(r"^(\d+)\.\s+" + re.escape(name) + r"\s*$", blk, re.M)
-    if not m:
-        log.append(f"Could not find {name} to equip."); return
-    clear(); send(m.group(1))
-    # may prompt to swap
-    if wait_for("swap the items", timeout=3):
-        clear(); send("1")
-    wait_for("Equipped")
-    log.append(f"Equipped {name}.")
-    clear(); send("0"); wait_for("What do you do?")   # back to hub
+    def close(self) -> None:
+        try:
+            self._proc.terminate()
+            self._proc.wait(timeout=3)
+        except Exception:
+            self._proc.kill()
 
-# enter inventory menu fresh each time via hub
-for name in TARGETS:
-    if got[name]:
-        # open inventory&equipment from hub
-        clear(); send("3"); wait_for("Equip Item")
-        clear(); send("3"); wait_for("Equip which item")
-        blk = snap()[snap().rfind("Equip which item"):]
-        m = re.search(r"^(\d+)\.\s+" + re.escape(name) + r"\s*$", blk, re.M)
-        if not m:
-            log.append(f"Could not find {name} in equip list.");
-            clear(); send("0"); wait_for("What do you do?"); continue
-        clear(); send(m.group(1))
-        if wait_for("swap the items", timeout=3):
-            clear(); send("1")
-        wait_for("Equipped")
-        log.append(f"Equipped {name}.")
-        clear(); send("0"); wait_for("What do you do?")
+    # -- low-level I/O --------------------------------------------------
+    def _pump(self) -> None:
+        """Background thread: accumulate the game's output as it arrives."""
+        for ch in iter(lambda: self._proc.stdout.read(1), ""):
+            with self._lock:
+                self._buf += ch
 
-# --- show stats ---
-clear(); send("3"); wait_for("Equip Item")
-clear(); send("4"); wait_for("Total Defence")
-stats = snap()
-clear(); send("0"); wait_for("What do you do?")
+    def snapshot(self) -> str:
+        """Return everything the game has printed since the last :meth:`clear`."""
+        with self._lock:
+            return self._buf
 
-# --- save to slot 1 ---
-clear(); send("5"); wait_for("Save to which slot")
-clear(); send("1"); wait_for("saved to slot 1")
+    def clear(self) -> None:
+        with self._lock:
+            self._buf = ""
 
-# --- quit cleanly ---
-clear(); send("0"); wait_for("Quit the game")
-send("0")
-time.sleep(0.5)
-proc.terminate()
+    def send(self, choice: str) -> None:
+        self._proc.stdin.write(f"{choice}\n")
+        self._proc.stdin.flush()
 
-print("==== ACTION LOG ====")
-print("\n".join(log))
-print("\n==== FINAL STATS ====")
-for line in stats.splitlines():
-    if any(k in line for k in ("Strength","Agility","Intelligence","Endurance","Total Damage","Total Defence")):
-        print(line.strip())
+    def expect(self, marker: str, timeout: float = 15) -> bool:
+        """Block until ``marker`` appears in the output, or the game exits."""
+        deadline = time.time() + timeout
+        while time.time() < deadline:
+            if marker in self.snapshot():
+                return True
+            if self._proc.poll() is not None:
+                return False
+            time.sleep(0.03)
+        return False
+
+    def act(self, choice: str, wait: str, timeout: float = 15) -> bool:
+        """Clear the buffer, send a menu ``choice``, wait for the next prompt.
+
+        This is the workhorse for menu navigation: clearing first means
+        :meth:`expect` only sees output produced by *this* choice.
+        """
+        self.clear()
+        self.send(choice)
+        return self.expect(wait, timeout)
+
+    def option_index(self, name: str, anchor: str | None = None) -> str | None:
+        """Return the number of the menu entry for ``name`` (e.g. ``"3"``).
+
+        Numbered menus look like ``"3. Iron Sword - 40g | ..."`` or simply
+        ``"1. Iron Sword"``. If ``anchor`` is given, only the text after its
+        last occurrence is searched -- handy when the same word appears earlier
+        in the scrollback.
+        """
+        text = self.snapshot()
+        if anchor:
+            text = text[text.rfind(anchor):]
+        match = re.search(rf"^\s*(\d+)\.\s+{re.escape(name)}\b", text, re.M)
+        return match.group(1) if match else None
+
+
+# ---------------------------------------------------------------------------
+# Task-level helpers, built on the GameDriver primitives.
+# ---------------------------------------------------------------------------
+
+def load_game(game: GameDriver, slot: int = 1) -> bool:
+    """From the main menu, load the save in ``slot``. Returns success."""
+    if not game.expect("Quit the game"):
+        return False
+    game.act("1", "Load which slot")        # 1. Load a game
+    return game.act(str(slot), "What do you do?")
+
+
+def buy_items(game: GameDriver, wanted, max_rolls: int = 60) -> dict:
+    """Re-roll the trader until every name in ``wanted`` has been bought.
+
+    The trader restocks each visit, so we leave and re-enter to refresh the
+    shelves. Returns ``{item_name: roll_number}`` for everything purchased.
+    """
+    wanted = list(wanted)
+    bought: dict = {}
+    game.act("2", "1. Buy")                 # enter Trader
+    game.act("1", "0. Back")                # open Buy
+    for roll in range(1, max_rolls + 1):
+        for name in wanted:
+            if name in bought:
+                continue
+            idx = game.option_index(name, anchor="=== Buy ===")
+            if idx:
+                game.clear()
+                game.send(idx)
+                if game.expect("Bought"):
+                    bought[name] = roll
+                    game.expect("0. Back")  # buy menu reprints
+        if len(bought) == len(wanted):
+            break
+        # leave and re-enter to reroll the stock
+        game.act("0", "1. Buy")             # Buy -> Trader menu
+        game.act("0", "What do you do?")    # Trader -> hub
+        game.act("2", "1. Buy")             # hub -> Trader
+        game.act("1", "0. Back")            # Trader -> Buy (fresh stock)
+    game.act("0", "1. Buy")                 # leave the trader
+    game.act("0", "What do you do?")
+    return bought
+
+
+def equip_item(game: GameDriver, name: str) -> bool:
+    """Equip ``name`` from the inventory, confirming any swap/replace prompt."""
+    if not game.act("3", "Equip Item"):     # hub -> Inventory & Equipment
+        return False
+    if not game.act("3", "Equip which item"):  # -> Equip list
+        return False
+    idx = game.option_index(name, anchor="Equip which item")
+    if idx is None:
+        game.act("0", "What do you do?")
+        return False
+    game.clear()
+    game.send(idx)
+    if game.expect("swap the items", timeout=2):        # armor slot occupied
+        game.send("1")
+    elif game.expect("Which slot to replace", timeout=2):  # both rings occupied
+        game.send("1")
+    game.expect("Equipped")
+    game.act("0", "What do you do?")         # back to hub
+    return True
+
+
+def character_sheet(game: GameDriver) -> str:
+    """Return the raw text of the stats screen (from the hub)."""
+    game.act("3", "Equip Item")             # Inventory & Equipment
+    game.act("4", "Total Defence")          # Statistics
+    sheet = game.snapshot()
+    game.act("0", "What do you do?")
+    return sheet
+
+
+def save_game(game: GameDriver, slot: int = 1) -> bool:
+    game.act("5", "Save to which slot")
+    return game.act(str(slot), "saved to slot")
+
+
+def quit_game(game: GameDriver) -> None:
+    """Return to the main menu and quit the game cleanly."""
+    if game.expect("What do you do?", timeout=2):
+        game.act("0", "Quit the game")      # hub -> main menu
+    game.send("0")                          # main menu -> quit
+
+
+def main(argv) -> int:
+    slot = int(argv[1]) if len(argv) > 1 else 1
+    with GameDriver() as game:
+        if not load_game(game, slot):
+            print(f"Could not load slot {slot}.", file=sys.stderr)
+            return 1
+        sheet = character_sheet(game)
+        quit_game(game)
+
+    keys = ("Strength", "Agility", "Intelligence", "Endurance",
+            "Total Damage", "Total Defence")
+    print(f"=== Character sheet (slot {slot}) ===")
+    for line in sheet.splitlines():
+        if any(k in line for k in keys):
+            print(line.strip())
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv))
