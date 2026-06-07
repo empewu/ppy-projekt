@@ -3,3 +3,8 @@
 __pycache__
 saves/
 saves/*.json
+
+# Local chat-play bridge scratch files (not part of the game)
+_play_harness.py
+_inputs.txt
+_prevlen.txt
