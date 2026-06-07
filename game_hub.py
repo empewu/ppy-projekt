@@ -5,6 +5,7 @@ from inventory import inventory_menu
 from exploration import exploration_menu
 from exceptions import PlayerDeadError
 from trader import trader_menu
+from balance import HEAL_COST_PER_HP
 
 def game_hub(player):
     while True:
@@ -15,7 +16,7 @@ def game_hub(player):
             console.print("1. Explore.")
             console.print("2. Trader.")
             console.print("3. Inventory & Equipment.")
-            console.print("4. Rest & Heal.")
+            console.print(f"4. Rest & Heal. [dim]({HEAL_COST_PER_HP}g per HP)[/dim]")
             console.print("5. Save.")
             console.print("0. Quit to main menu.")
 
@@ -28,9 +29,7 @@ def game_hub(player):
                 case 3:
                     inventory_menu(player)
                 case 4:
-                    console.print("\nYou use the time to rest and [green]heal[/green] your wounds.")
-                    player.heal()
-                    console.print("[dim]Health has been restored to max.[/dim]")
+                    heal_at_hub(player)
                 case 5:
                     save_menu(player)
                 case 0:
@@ -40,3 +39,31 @@ def game_hub(player):
             console.print("\n[bold red]You have died...[/bold red]")
             console.input("[dim]Press Enter to continue[/dim]")
             return
+
+
+def heal_at_hub(player):
+    """Restore health for gold. Healing is no longer free, so gold (and the
+    free in-dungeon rest sites) become a real part of attrition."""
+    missing = player.healthMax - player.healthCurrent
+    if missing <= 0:
+        console.print("\n[dim]You are already at full health.[/dim]")
+        return
+
+    cost_full = missing * HEAL_COST_PER_HP
+    if player.gold >= cost_full:
+        player.gold -= cost_full
+        player.heal()
+        console.print(f"\nYou rest and [green]heal[/green] to full for [yellow]{cost_full}g[/yellow].")
+        return
+
+    affordable_hp = player.gold // HEAL_COST_PER_HP
+    if affordable_hp <= 0:
+        console.print("\n[red]You cannot afford any healing.[/red]")
+        return
+
+    player.gold -= affordable_hp * HEAL_COST_PER_HP
+    player.heal(affordable_hp)
+    console.print(
+        f"\nYou can only afford to recover [green]{affordable_hp} HP[/green] "
+        f"for [yellow]{affordable_hp * HEAL_COST_PER_HP}g[/yellow]."
+    )

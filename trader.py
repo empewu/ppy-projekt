@@ -33,7 +33,11 @@ def generate_stock(size = TRADER_STOCK_SIZE):
     return random.sample(TRADER_POOL, min(size, len(TRADER_POOL)))
 
 def trader_menu(player):
-    stock = generate_stock()
+    # Reuse the player's standing stock; only generate a fresh assortment when
+    # there is none (a new game, or after the last exploration cleared it).
+    if player.trader_stock is None:
+        player.trader_stock = generate_stock()
+    stock = player.trader_stock
 
     while True:
         console.print(f"[bold yellow]=== Trader ===[/bold yellow]")

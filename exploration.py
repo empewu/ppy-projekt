@@ -23,6 +23,9 @@ def exploration_menu(player):
 
     run_location(player, location)
 
+    # Travelling refreshes what the trader has on offer next time.
+    player.trader_stock = None
+
 @require_alive
 def run_location(player, location):
     console.print(f"\n[bold]You enter the {location['name']}...[/bold]")

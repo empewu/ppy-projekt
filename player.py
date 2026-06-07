@@ -14,6 +14,9 @@ class Player:
         }
         self.healthMax = HP_BASE + Endurance * HP_PER_ENDURANCE
         self.healthCurrent = self.healthMax
+        # The trader's current offering. Persisted between hub visits so the
+        # player cannot re-roll it for free; refreshed after each exploration.
+        self.trader_stock = None
         self.equipment = {
             "Head": None,
             "Torso": None,

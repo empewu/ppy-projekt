@@ -39,6 +39,7 @@ HP_PER_ENDURANCE = _DATA["health"]["per_endurance"]
 TRADER_BUY_RATE = _DATA["economy"]["trader_buy_rate"]
 TRADER_SELL_RATE = _DATA["economy"]["trader_sell_rate"]
 TRADER_STOCK_SIZE = _DATA["economy"]["trader_stock_size"]
+HEAL_COST_PER_HP = _DATA["economy"]["heal_cost_per_hp"]
 
 RING_BONUS = _DATA["progression"]["ring_bonus"]
 
