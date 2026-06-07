@@ -36,6 +36,21 @@ heal_cost_per_hp  = 1     # gold charged per point of health restored at the hub
 # let a build adapt at the margins but cannot turn one build into another.
 ring_bonus = 1
 
+[creation]
+starting_gold = 50   # gold a freshly created character begins with
+
+[save]
+version = 2   # bumped when the save format / balance changes meaningfully
+
+# Starting inventory by the character's highest attribute. Item names must
+# match registry (display) names. Each kit is matched to its build's damage
+# type; the Endurance kit includes the Spiked Shield (its offensive outlet).
+[kits]
+Strength     = ["Copper Sword", "Copper Plate"]
+Agility      = ["Wooden Bow", "Leather Vest"]
+Intelligence = ["Wooden Staff", "Cloth Vest", "Magical Talisman"]
+Endurance    = ["Wooden Staff", "Cloth Vest", "Spiked Shield"]
+
 
 # ============================ WEAPONS ========================================
 #  Mainhand and offhand items. Fields: damage, defence, value,

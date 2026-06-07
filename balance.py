@@ -43,6 +43,10 @@ HEAL_COST_PER_HP = _DATA["economy"]["heal_cost_per_hp"]
 
 RING_BONUS = _DATA["progression"]["ring_bonus"]
 
+STARTING_GOLD = _DATA["creation"]["starting_gold"]
+SAVE_VERSION = _DATA["save"]["version"]
+STARTING_KITS = _DATA["kits"]
+
 
 # --- entity stat tables (name -> dict of fields) -----------------------------
 WEAPONS = _DATA["weapons"]
@@ -137,6 +141,12 @@ def _validate():
     for name, s in RINGS.items():
         if s.get("attribute") not in _VALID_STATS:
             raise ValueError(f"balance.toml: ring {name!r} has invalid attribute {s.get('attribute')!r}")
+
+    for stat, names in STARTING_KITS.items():
+        if stat not in _VALID_STATS:
+            raise ValueError(f"balance.toml: kit key {stat!r} is not a valid attribute")
+        if not isinstance(names, list) or not all(isinstance(n, str) for n in names):
+            raise ValueError(f"balance.toml: kit {stat!r} must be a list of item names")
 
     valid_matchups = _VALID_TYPES | {PHYSICAL}
     for name, s in ENEMIES.items():
