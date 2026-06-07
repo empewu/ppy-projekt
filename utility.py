@@ -129,3 +129,35 @@ def compute_attack_damage(player, enemy):
         if power:
             total += power * type_multiplier(getattr(item, "damage_type", None), enemy)
     return int(total * (100 / (100 + enemy.defence)))
+
+def player_damage_types(player):
+    """The damage types the player's currently equipped weapons deal."""
+    types = set()
+    for item in player.equipment.values():
+        if item and getattr(item, "damage", 0) > 0:
+            dtype = getattr(item, "damage_type", None)
+            if dtype:
+                types.add(dtype)
+    return types
+
+def describe_matchup(player, enemy):
+    """A combat hint about how the player's current attacks fare against the
+    enemy's weakness/resistance. Returns markup to print, or None if neutral.
+
+    Reported relative to the weapons the player actually has equipped, so the
+    hint is always actionable rather than an info-dump of hidden stats.
+    """
+    types = player_damage_types(player)
+    if not types:
+        return None
+
+    weak = sorted(t for t in types if type_matches(t, getattr(enemy, "weakness", None)))
+    resisted = sorted(t for t in types if type_matches(t, getattr(enemy, "resistance", None)))
+
+    lines = []
+    if weak:
+        lines.append(f"[bold green]The {enemy.name} is vulnerable to your {'/'.join(weak)} attacks![/bold green]")
+    if resisted:
+        lines.append(f"[bold red]The {enemy.name} resists your {'/'.join(resisted)} attacks.[/bold red]")
+    return "\n".join(lines) if lines else None
+

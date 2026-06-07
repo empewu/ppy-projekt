@@ -1,4 +1,4 @@
-from utility import roll_loot, min_max_number, require_alive, compute_attack_damage, get_total_defence
+from utility import roll_loot, min_max_number, require_alive, compute_attack_damage, get_total_defence, describe_matchup
 from console import console
 from exceptions import PlayerDeadError
 import copy
@@ -7,6 +7,10 @@ import copy
 def start_combat(player, enemy):
     enemy = copy.copy(enemy)
     console.print(f"\n[bold red]A {enemy.name} appears![/bold red]")
+
+    matchup = describe_matchup(player, enemy)
+    if matchup:
+        console.print(matchup)
 
     while player.is_alive() and enemy.health > 0:
         console.print(f"\n[green]Your HP: {player.healthCurrent}/{player.healthMax}[/green]")
