@@ -102,6 +102,8 @@ def enemy_kwargs(name):
         health=s["health"],
         damage=s["damage"],
         defence=s["defence"],
+        weakness=s.get("weakness"),
+        resistance=s.get("resistance"),
     )
 
 
@@ -135,10 +137,14 @@ def _validate():
         if s.get("attribute") not in _VALID_STATS:
             raise ValueError(f"balance.toml: ring {name!r} has invalid attribute {s.get('attribute')!r}")
 
+    valid_matchups = _VALID_TYPES | {PHYSICAL}
     for name, s in ENEMIES.items():
         for key in ("health", "damage", "defence"):
             if key not in s:
                 raise ValueError(f"balance.toml: enemy {name!r} missing '{key}'")
+        for key in ("weakness", "resistance"):
+            if key in s and s[key] not in valid_matchups:
+                raise ValueError(f"balance.toml: enemy {name!r} has invalid {key} {s[key]!r}")
 
 
 _validate()

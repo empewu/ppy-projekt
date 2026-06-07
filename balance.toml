@@ -22,7 +22,7 @@ resistance = 0.7   # damage multiplier when an enemy resists the damage type
 neutral    = 1.0   # damage multiplier otherwise
 
 [health]
-base          = 20   # health every character starts with
+base          = 25   # health every character starts with
 per_endurance = 5    # extra max health per point of Endurance
 
 [economy]
@@ -39,7 +39,7 @@ ring_bonus = 2   # attribute points granted by any stat ring
 #  optional req_stat + req_amount.
 
 [weapons."Copper Sword"]
-damage = 10
+damage = 14
 defence = 4
 value = 20
 type = "melee"
@@ -247,44 +247,70 @@ value = 200
 
 
 # ============================ ENEMIES ========================================
-#  Fields: health, damage, defence.
+#  Fields: health, damage, defence, optional weakness + resistance.
+#  weakness/resistance are damage types ("melee"/"ranged"/"magic") or the
+#  "physical" shorthand (melee and ranged). Omit for none.
+#
+#  Each location mixes matchups so every build meets favourable and
+#  unfavourable enemies; total challenge stays comparable across builds.
+#
+#  The weakness/resistance table is deliberately symmetric: each of the three
+#  damage types is the weakness of exactly two enemies and is resisted by
+#  exactly two, so no build is systematically favoured. Goblin (tutorial) and
+#  Golem (boss) are neutral, the latter a pure stat-check climax.
 
 [enemies.Goblin]
-health = 15
-damage = 3
+health = 30
+damage = 4
 defence = 0
 
 [enemies.Spider]
-health = 20
-damage = 5
+health = 45
+damage = 6
 defence = 5
+weakness = "melee"
+resistance = "ranged"
 
 [enemies.Wolf]
-health = 25
+health = 50
 damage = 7
 defence = 5
-
-[enemies.Wraith]
-health = 10
-damage = 3
-defence = 100
-
-[enemies.Ghoul]
-health = 35
-damage = 3
-defence = 10
+weakness = "ranged"
+resistance = "magic"
 
 [enemies.Slime]
-health = 25
-damage = 7
+health = 55
+damage = 6
 defence = 0
+weakness = "magic"
+resistance = "melee"
+
+# Was a harmless punching bag (3 dmg); now it bites.
+[enemies.Ghoul]
+health = 55
+damage = 7
+defence = 8
+weakness = "ranged"
+resistance = "melee"
 
 [enemies.Skeleton]
-health = 30
+health = 50
 damage = 7
-defence = 20
+defence = 12
+weakness = "melee"
+resistance = "magic"
 
+# Was a defence=100 gimmick; now a proper "bring magic" check: weak to magic.
+[enemies.Wraith]
+health = 45
+damage = 7
+defence = 0
+weakness = "magic"
+resistance = "ranged"
+
+# Boss: neutral to all damage types -- high health, defence and damage make it
+# a threat to every build equally, not a check on one element.
 [enemies.Golem]
-health = 100
-damage = 10
-defence = 30
+health = 120
+damage = 8
+defence = 20
