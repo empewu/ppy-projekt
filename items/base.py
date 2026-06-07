@@ -6,6 +6,14 @@ class Item:
 
     def __str__(self):
         return self.name
+
+#mikstury i inne przedmioty jednorazowe
+class Consumable(Item):
+    def __init__(self, name, description, value, effect, amount):
+        super().__init__(name, description, value)
+        # effect: "heal" (anywhere) or "damage_buff"/"defence_buff" (combat only).
+        self.effect = effect
+        self.amount = amount
     
 class Equipment(Item):
     def __init__(self, name, description, value, slot, attribute_required = None, attribute_amount = 0):

@@ -393,3 +393,53 @@ resistance = "ranged"
 health = 120
 damage = 8
 defence = 20
+
+
+# ============================ POTIONS ========================================
+#  Consumables crafted from monster parts via the hub Alchemy menu.
+#  effect: "heal" restores health (usable anywhere); "damage_buff" and
+#  "defence_buff" last the current fight (combat only). Potion `value` is kept
+#  below the ingredient value so crafting to sell is never profitable.
+
+[potions."Health Potion"]
+description = "A red brew that knits wounds shut. Restores 20 health."
+value = 12
+effect = "heal"
+amount = 20
+
+[potions."Greater Health Potion"]
+description = "A potent crimson draught. Restores 45 health."
+value = 30
+effect = "heal"
+amount = 45
+
+[potions."Elixir of Power"]
+description = "Liquid fury. Adds 12 damage to your attacks for the current fight."
+value = 30
+effect = "damage_buff"
+amount = 12
+
+[potions."Stoneskin Draught"]
+description = "Your skin hardens like rock. Reduces each hit you take by 4 for the current fight."
+value = 25
+effect = "defence_buff"
+amount = 4
+
+
+# ============================ RECIPES ========================================
+#  Ingredient lists for the Alchemy menu. Each part tier has a distinct role:
+#  common parts heal, rare parts defend, magical parts empower. Ingredient
+#  names must be items in the registry (the monster-part loot).
+
+[recipes."Health Potion".ingredients]
+"Monster Parts" = 1
+
+[recipes."Greater Health Potion".ingredients]
+"Rare Monster Parts" = 2
+
+[recipes."Elixir of Power".ingredients]
+"Magical Monster Parts" = 1
+
+[recipes."Stoneskin Draught".ingredients]
+"Rare Monster Parts" = 1
+"Monster Parts" = 1
