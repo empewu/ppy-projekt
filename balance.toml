@@ -1,0 +1,262 @@
+# =============================================================================
+#  balance.toml  --  the single source of truth for every tunable game number.
+#
+#  Edit values here to re-tune the game; no Python changes required.
+#  This file is read once at startup by balance.py (the loader). Logic modules
+#  import from `balance`, never from this file directly.
+#
+#  Conventions:
+#    * TOML has no "null". An omitted optional key means "none" (e.g. a weapon
+#      with no `req_stat` has no attribute requirement).
+#    * Multipliers/rates are floats (1.0), counts/bonuses are ints (2).
+#    * Table keys are the item/enemy *display name* (the registry key).
+# =============================================================================
+
+[health]
+base          = 20   # health every character starts with
+per_endurance = 5    # extra max health per point of Endurance
+
+[economy]
+trader_buy_rate   = 1.1   # multiplier on item value when buying
+trader_sell_rate  = 0.9   # multiplier on item value when selling
+trader_stock_size = 5     # number of items offered per trader visit
+
+[progression]
+ring_bonus = 2   # attribute points granted by any stat ring
+
+
+# ============================ WEAPONS ========================================
+#  Mainhand and offhand items. Fields: damage, defence, value,
+#  optional req_stat + req_amount.
+
+[weapons."Copper Sword"]
+damage = 10
+defence = 4
+value = 20
+req_stat = "Strength"
+req_amount = 2
+
+[weapons."Iron Sword"]
+damage = 20
+defence = 8
+value = 40
+req_stat = "Strength"
+req_amount = 3
+
+[weapons."Iron Hammer"]
+damage = 30
+defence = 0
+value = 50
+req_stat = "Strength"
+req_amount = 5
+
+[weapons."Wooden Staff"]
+damage = 5
+defence = 2
+value = 10
+
+[weapons."Wooden Bow"]
+damage = 15
+defence = 0
+value = 30
+req_stat = "Agility"
+req_amount = 2
+
+[weapons."Iron Crossbow"]
+damage = 30
+defence = 0
+value = 40
+req_stat = "Agility"
+req_amount = 4
+
+[weapons."Magical Talisman"]
+damage = 15
+defence = 0
+value = 100
+req_stat = "Intelligence"
+req_amount = 4
+
+[weapons."Warding Talisman"]
+damage = 0
+defence = 25
+value = 100
+req_stat = "Intelligence"
+req_amount = 4
+
+[weapons."Wooden Shield"]
+damage = 0
+defence = 15
+value = 50
+
+[weapons."Tower Shield"]
+damage = 0
+defence = 35
+value = 100
+req_stat = "Strength"
+req_amount = 6
+
+[weapons."Spiked Shield"]
+damage = 10
+defence = 15
+value = 75
+req_stat = "Endurance"
+req_amount = 4
+
+
+# ============================ ARMOUR =========================================
+#  Head / Torso / Arms / Legs pieces. Fields: defence, value,
+#  optional req_stat + req_amount. The slot is determined by the module that
+#  builds the piece, so it is not stored here.
+
+[armour."Copper Helmet"]
+defence = 5
+value = 20
+req_stat = "Strength"
+req_amount = 2
+
+[armour."Iron Helmet"]
+defence = 10
+value = 40
+req_stat = "Strength"
+req_amount = 4
+
+[armour."Cloth Hood"]
+defence = 1
+value = 10
+
+[armour."Leather Hood"]
+defence = 5
+value = 10
+req_stat = "Agility"
+req_amount = 2
+
+[armour."Copper Plate"]
+defence = 15
+value = 20
+req_stat = "Strength"
+req_amount = 3
+
+[armour."Iron Plate"]
+defence = 20
+value = 40
+req_stat = "Strength"
+req_amount = 5
+
+[armour."Cloth Vest"]
+defence = 5
+value = 10
+
+[armour."Leather Vest"]
+defence = 10
+value = 10
+req_stat = "Agility"
+req_amount = 3
+
+[armour."Copper Gauntlets"]
+defence = 5
+value = 20
+req_stat = "Strength"
+req_amount = 2
+
+[armour."Iron Gauntlets"]
+defence = 10
+value = 40
+req_stat = "Strength"
+req_amount = 4
+
+[armour."Cloth Mittens"]
+defence = 1
+value = 10
+
+[armour."Leather Gloves"]
+defence = 5
+value = 10
+req_stat = "Agility"
+req_amount = 2
+
+[armour."Copper Greaves"]
+defence = 5
+value = 20
+req_stat = "Strength"
+req_amount = 2
+
+[armour."Iron Greaves"]
+defence = 10
+value = 40
+req_stat = "Strength"
+req_amount = 4
+
+[armour."Cloth Wrappings"]
+defence = 1
+value = 10
+
+[armour."Leather Boots"]
+defence = 5
+value = 10
+req_stat = "Agility"
+req_amount = 2
+
+
+# ============================ RINGS ==========================================
+#  Each ring boosts one attribute. The bonus amount is global
+#  (progression.ring_bonus); only the boosted attribute and price live here.
+
+[rings."Red Ring"]
+attribute = "Strength"
+value = 200
+
+[rings."Yellow Ring"]
+attribute = "Agility"
+value = 200
+
+[rings."Blue Ring"]
+attribute = "Intelligence"
+value = 200
+
+[rings."Green Ring"]
+attribute = "Endurance"
+value = 200
+
+
+# ============================ ENEMIES ========================================
+#  Fields: health, damage, defence.
+
+[enemies.Goblin]
+health = 15
+damage = 3
+defence = 0
+
+[enemies.Spider]
+health = 20
+damage = 5
+defence = 5
+
+[enemies.Wolf]
+health = 25
+damage = 7
+defence = 5
+
+[enemies.Wraith]
+health = 10
+damage = 3
+defence = 100
+
+[enemies.Ghoul]
+health = 35
+damage = 3
+defence = 10
+
+[enemies.Slime]
+health = 25
+damage = 7
+defence = 0
+
+[enemies.Skeleton]
+health = 30
+damage = 7
+defence = 20
+
+[enemies.Golem]
+health = 100
+damage = 10
+defence = 30

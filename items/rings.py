@@ -1,33 +1,16 @@
 from items.base import Ring
+from balance import ring_kwargs
 
-StrengthRing = Ring(
-    "Red Ring",
-    "A silver ring with a red gem.",
-    value = 200,
-    attribute_gained = "Strength",
-    attribute_value = 2
-    )
+# The boosted attribute, price and bonus amount live in balance.toml
+# (progression.ring_bonus). Only name + description are kept here.
 
-AgilityRing = Ring(
-    "Yellow Ring",
-    "A silver ring with a yellow gem.",
-    value = 200,
-    attribute_gained = "Agility",
-    attribute_value = 2
-    )
+def _ring(name, description):
+    return Ring(name, description, **ring_kwargs(name))
 
-IntelligenceRing = Ring(
-    "Blue Ring",
-    "A silver ring with a blue gem.",
-    value = 200,
-    attribute_gained = "Intelligence",
-    attribute_value = 2
-    )
+StrengthRing = _ring("Red Ring", "A silver ring with a red gem.")
 
-EnduranceRing = Ring(
-    "Green Ring",
-    "A silver ring with a green gem.",
-    value = 200,
-    attribute_gained = "Endurance",
-    attribute_value = 2
-)
+AgilityRing = _ring("Yellow Ring", "A silver ring with a yellow gem.")
+
+IntelligenceRing = _ring("Blue Ring", "A silver ring with a blue gem.")
+
+EnduranceRing = _ring("Green Ring", "A silver ring with a green gem.")

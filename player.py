@@ -1,3 +1,6 @@
+from balance import HP_BASE, HP_PER_ENDURANCE
+
+
 class Player:
     def __init__(self, name, Strength, Agility, Intelligence, Endurance):
         self.name = name
@@ -9,7 +12,7 @@ class Player:
             "Intelligence": Intelligence,
             "Endurance": Endurance,
         }
-        self.healthMax = 20 + Endurance * 5
+        self.healthMax = HP_BASE + Endurance * HP_PER_ENDURANCE
         self.healthCurrent = self.healthMax
         self.equipment = {
             "Head": None,
@@ -61,7 +64,7 @@ class Player:
 
     #maksymalne zdrowie zależy od wytrzymałości (Endurance)
     def recompute_max_health(self):
-        self.healthMax = 20 + self.statistics["Endurance"] * 5
+        self.healthMax = HP_BASE + self.statistics["Endurance"] * HP_PER_ENDURANCE
         if self.healthCurrent > self.healthMax:
             self.healthCurrent = self.healthMax
 

@@ -1,59 +1,20 @@
 from items.base import MainHand
+from balance import weapon_kwargs
 
-CopperSword = MainHand(
-    "Copper Sword",
-    "A basic copper sword.",
-    value = 20,
-    damage = 10,
-    defence = 4,
-    attribute_required = "Strength",
-    attribute_amount = 2
-    )
+# Stats (damage, defence, value, requirements) live in balance.toml.
+# Here we keep only the identity: name + description.
 
-IronSword = MainHand(
-    "Iron Sword",
-    "A sturdy iron sword.",
-    value = 40,
-    damage = 20,
-    defence = 8,
-    attribute_required = "Strength",
-    attribute_amount = 3
-    )
+def _mainhand(name, description):
+    return MainHand(name, description, **weapon_kwargs(name))
 
-IronHammer = MainHand(
-    "Iron Hammer",
-    "A sturdy iron hammer. Impossible to defend with.",
-    value = 50,
-    damage = 30,
-    defence = 0,
-    attribute_required = "Strength",
-    attribute_amount = 5
-    )
+CopperSword = _mainhand("Copper Sword", "A basic copper sword.")
 
-WoodenStaff = MainHand(
-    "Wooden Staff",
-    "A basic wooden staff. Barely better than a stick.",
-    value = 10,
-    damage = 5,
-    defence = 2
-    )
+IronSword = _mainhand("Iron Sword", "A sturdy iron sword.")
 
-WoodenBow = MainHand(
-    "Wooden Bow",
-    "A basic wooden bow.",
-    value = 30,
-    damage = 15,
-    defence = 0,
-    attribute_required = "Agility",
-    attribute_amount = 2
-)
+IronHammer = _mainhand("Iron Hammer", "A sturdy iron hammer. Impossible to defend with.")
 
-IronCrossbow = MainHand(
-    "Iron Crossbow",
-    "A sturdy crossbow with an iron mechanism.",
-    value = 40,
-    damage = 30,
-    defence = 0,
-    attribute_required = "Agility",
-    attribute_amount = 4
-)
+WoodenStaff = _mainhand("Wooden Staff", "A basic wooden staff. Barely better than a stick.")
+
+WoodenBow = _mainhand("Wooden Bow", "A basic wooden bow.")
+
+IronCrossbow = _mainhand("Iron Crossbow", "A sturdy crossbow with an iron mechanism.")

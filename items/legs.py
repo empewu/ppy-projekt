@@ -1,35 +1,15 @@
 from items.base import LegsArmour
+from balance import armour_kwargs
 
-CopperBoots = LegsArmour(
-    "Copper Greaves",
-    "A pair of basic copper greaves.",
-    value = 20,
-    defence = 5,
-    attribute_required = "Strength",
-    attribute_amount = 2
-    )
+# Stats live in balance.toml; only name + description are kept here.
 
-IronBoots = LegsArmour(
-    "Iron Greaves",
-    "A pair of sturdy iron greaves.",
-    value = 40,
-    defence = 10,
-    attribute_required = "Strength",
-    attribute_amount = 4
-    )
+def _legs(name, description):
+    return LegsArmour(name, description, **armour_kwargs(name))
 
-ClothBoots = LegsArmour(
-    "Cloth Wrappings",
-    "A pair of basic cloth wrappings.",
-    value = 10,
-    defence = 1
-    )
+CopperBoots = _legs("Copper Greaves", "A pair of basic copper greaves.")
 
-LeatherBoots = LegsArmour(
-    "Leather Boots",
-    "A pair of sturdy leather boots.",
-    value = 10,
-    defence = 5,
-    attribute_required = "Agility",
-    attribute_amount = 2
-)
+IronBoots = _legs("Iron Greaves", "A pair of sturdy iron greaves.")
+
+ClothBoots = _legs("Cloth Wrappings", "A pair of basic cloth wrappings.")
+
+LeatherBoots = _legs("Leather Boots", "A pair of sturdy leather boots.")

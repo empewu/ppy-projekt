@@ -1,35 +1,15 @@
 from items.base import HeadArmour
+from balance import armour_kwargs
 
-CopperHelmet = HeadArmour(
-    "Copper Helmet",
-    "A basic copper helmet.",
-    value = 20,
-    defence = 5,
-    attribute_required = "Strength",
-    attribute_amount = 2
-    )
+# Stats live in balance.toml; only name + description are kept here.
 
-IronHelmet = HeadArmour(
-    "Iron Helmet",
-    "A sturdy iron helmet.",
-    value = 40,
-    defence = 10,
-    attribute_required = "Strength",
-    attribute_amount = 4
-    )
+def _helmet(name, description):
+    return HeadArmour(name, description, **armour_kwargs(name))
 
-ClothHood = HeadArmour(
-    "Cloth Hood",
-    "A basic cloth hood.",
-    value = 10,
-    defence = 1
-    )
+CopperHelmet = _helmet("Copper Helmet", "A basic copper helmet.")
 
-LeatherHood = HeadArmour(
-    "Leather Hood",
-    "A sturdy leather hood.",
-    value = 10,
-    defence = 5,
-    attribute_required = "Agility",
-    attribute_amount = 2
-)
+IronHelmet = _helmet("Iron Helmet", "A sturdy iron helmet.")
+
+ClothHood = _helmet("Cloth Hood", "A basic cloth hood.")
+
+LeatherHood = _helmet("Leather Hood", "A sturdy leather hood.")
