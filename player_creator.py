@@ -1,9 +1,8 @@
 from player import Player
 from console import console
 from utility import min_max_number, is_valid_name
-from items.mainhand import CopperSword, WoodenStaff, WoodenBow
-from items.torso import CopperTorso, ClothTorso, LeatherTorso
-from items.offhand import MagicalTalisman, WoodenShield
+from items import ITEM_REGISTRY
+from balance import STARTING_KITS, STARTING_GOLD
 
 
 def create_character():
@@ -45,26 +44,16 @@ def create_character():
         break
 
     player = Player(name, Strength, Agility, Intelligence, Endurance)
+    player.gold = STARTING_GOLD
 
     #lambda do sprawdzenia
     #który atrybut jest największy
     highest = max(player.statistics, key=lambda stat: player.statistics[stat])
 
-    match highest:
-        case "Strength":
-            player.inventory.append(CopperSword)
-            player.inventory.append(CopperTorso)
-        case "Agility":
-            player.inventory.append(WoodenBow)
-            player.inventory.append(LeatherTorso)
-        case "Intelligence":
-            player.inventory.append(WoodenStaff)
-            player.inventory.append(ClothTorso)
-            player.inventory.append(MagicalTalisman)
-        case "Endurance":
-            player.inventory.append(WoodenStaff)
-            player.inventory.append(ClothTorso)
-            player.inventory.append(WoodenShield)
+    # Starting kit is data-driven (balance.toml [kits]); items are resolved
+    # from the registry by their display name.
+    for item_name in STARTING_KITS[highest]:
+        player.inventory.append(ITEM_REGISTRY[item_name])
 
     console.print(f"Created new character: {player.name}")
     console.print("\n[dim]Each new character stands with items in their inventory based on their attributes.[/dim]")

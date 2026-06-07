@@ -1,3 +1,6 @@
+from balance import HP_BASE, HP_PER_ENDURANCE, SAVE_VERSION
+
+
 class Player:
     def __init__(self, name, Strength, Agility, Intelligence, Endurance):
         self.name = name
@@ -9,8 +12,11 @@ class Player:
             "Intelligence": Intelligence,
             "Endurance": Endurance,
         }
-        self.healthMax = 20 + Endurance * 5
+        self.healthMax = HP_BASE + Endurance * HP_PER_ENDURANCE
         self.healthCurrent = self.healthMax
+        # The trader's current offering. Persisted between hub visits so the
+        # player cannot re-roll it for free; refreshed after each exploration.
+        self.trader_stock = None
         self.equipment = {
             "Head": None,
             "Torso": None,
@@ -25,6 +31,7 @@ class Player:
     #zamiana na słownik
     def to_dict(self):
         return {
+            "version": SAVE_VERSION,
             "name": self.name,
             "gold": self.gold,
             "inventory": [item.name for item in self.inventory],
@@ -39,6 +46,18 @@ class Player:
     @classmethod
     def from_save(cls, data):
         from items import ITEM_REGISTRY
+        from console import console
+
+        # Saves predating the rebalance carry no version. Their stats and gear
+        # still load (gear is resolved by name), but now mean different things
+        # under the new combat maths; warn that the save has been migrated.
+        version = data.get("version", 1)
+        if version < SAVE_VERSION:
+            console.print(
+                "[yellow]This save predates the rebalance and has been "
+                "migrated; your character's power may differ.[/yellow]"
+            )
+
         stats = data["statistics"]
         player = cls(
             name=data["name"],
@@ -61,7 +80,7 @@ class Player:
 
     #maksymalne zdrowie zależy od wytrzymałości (Endurance)
     def recompute_max_health(self):
-        self.healthMax = 20 + self.statistics["Endurance"] * 5
+        self.healthMax = HP_BASE + self.statistics["Endurance"] * HP_PER_ENDURANCE
         if self.healthCurrent > self.healthMax:
             self.healthCurrent = self.healthMax
 

@@ -1,49 +1,19 @@
 from items.base import OffHand
+from balance import weapon_kwargs
 
-MagicalTalisman = OffHand(
-    "Magical Talisman",
-    "A talisman made of bones and wood. Enhances your attacks.",
-    value = 100,
-    damage = 15,
-    defence = 0,
-    attribute_required = "Intelligence",
-    attribute_amount = 4
-    )
+# Stats live in balance.toml; only name + description are kept here.
 
-WardingTalisman = OffHand(
-    "Warding Talisman",
-    "A talisman made of bones and wood. Protects you from attacks.",
-    value = 100,
-    damage = 0,
-    defence = 25,
-    attribute_required = "Intelligence",
-    attribute_amount = 4
-    )
+def _offhand(name, description):
+    return OffHand(name, description, **weapon_kwargs(name))
 
-WoodenShield = OffHand(
-    "Wooden Shield",
-    "A sturdy wooden shield.",
-    value = 50,
-    damage = 0,
-    defence = 15
-    )
+MagicalTalisman = _offhand("Magical Talisman", "A talisman made of bones and wood. Enhances your attacks.")
 
-TowerShield = OffHand(
-    "Tower Shield",
-    "A massive iron shield.",
-    value = 100,
-    damage = 0,
-    defence = 35,
-    attribute_required = "Strength",
-    attribute_amount = 6
-    )
+WardingTalisman = _offhand("Warding Talisman", "A talisman made of bones and wood. Protects you from attacks.")
 
-SpikedShield = OffHand(
-    "Spiked Shield",
-    "A shield covered with spikes, both on the inside and outside.",
-    value = 75,
-    damage = 10,
-    defence = 15,
-    attribute_required = "Endurance",
-    attribute_amount = 4
-    )
+WoodenShield = _offhand("Wooden Shield", "A sturdy wooden shield.")
+
+TowerShield = _offhand("Tower Shield", "A massive iron shield.")
+
+SpikedShield = _offhand("Spiked Shield", "A shield covered with spikes, both on the inside and outside.")
+
+SpikedTowerShield = _offhand("Spiked Tower Shield", "A massive tower shield lined with cruel spikes. Only the hardy can wield it.")

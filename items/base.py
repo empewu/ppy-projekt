@@ -39,10 +39,16 @@ class LegsArmour(Armour):
 
 #bronie, mainhand i offhand
 class Weapon(Equipment):
-    def __init__(self, name, description, value, damage, defence, slot, **kwargs):
+    def __init__(self, name, description, value, damage, defence, slot,
+                 damage_type=None, governing_stat=None, **kwargs):
         super().__init__(name, description, value, slot, **kwargs)
         self.damage = damage
         self.defence = defence
+        # damage_type: "melee" / "ranged" / "magic" (None for non-damaging gear).
+        # governing_stat: the attribute that scales this weapon's damage
+        # (None = flat damage that does not scale, e.g. a talisman).
+        self.damage_type = damage_type
+        self.governing_stat = governing_stat
     
 class MainHand(Weapon):
     def __init__(self, name, description, value, damage, defence, **kwargs):

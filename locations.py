@@ -19,7 +19,7 @@ LOCATIONS = {
         "description": "Ancient ruins full of danger.",
         "encounters": [
             {"type": "combat", "enemy": Skeleton},
-            {"type": "combat", "enemy": Skeleton},
+            {"type": "combat", "enemy": Wraith},
             {"type": "rest"},
             {"type": "treasure", "loot": LOCATION_LOOT["Ancient Ruins"]},
             {"type": "combat", "enemy": Golem},

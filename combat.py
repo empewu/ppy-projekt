@@ -1,4 +1,4 @@
-from utility import roll_loot, min_max_number, require_alive, get_total_damage, get_total_defence
+from utility import roll_loot, min_max_number, require_alive, compute_attack_damage, get_total_defence
 from console import console
 from exceptions import PlayerDeadError
 import copy
@@ -29,7 +29,7 @@ def start_combat(player, enemy):
     return "victory"
 
 def attack(player, enemy):
-    damage_dealt = int(get_total_damage(player) * (100 / (100 + enemy.defence)))
+    damage_dealt = compute_attack_damage(player, enemy)
     enemy.health -= damage_dealt
     console.print(f"You deal [red]{damage_dealt}[/red] damage to {enemy.name}.")
 

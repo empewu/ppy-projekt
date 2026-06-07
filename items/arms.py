@@ -1,35 +1,17 @@
 from items.base import ArmsArmour
+from balance import armour_kwargs
 
-CopperGloves = ArmsArmour(
-    "Copper Gauntlets",
-    "A pair of basic copper gauntlets.",
-    value = 20,
-    defence = 5,
-    attribute_required = "Strength",
-    attribute_amount = 2
-    )
+# Stats live in balance.toml; only name + description are kept here.
 
-IronGloves = ArmsArmour(
-    "Iron Gauntlets",
-    "A pair of sturdy iron gauntlets.",
-    value = 40,
-    defence = 10,
-    attribute_required = "Strength",
-    attribute_amount = 4
-    )
+def _arms(name, description):
+    return ArmsArmour(name, description, **armour_kwargs(name))
 
-ClothGloves = ArmsArmour(
-    "Cloth Mittens",
-    "A pair of basic cloth mittens.",
-    value = 10,
-    defence = 1
-    )
+CopperGloves = _arms("Copper Gauntlets", "A pair of basic copper gauntlets.")
 
-LeatherGloves = ArmsArmour(
-    "Leather Gloves",
-    "A pair of sturdy leather gloves.",
-    value = 10,
-    defence = 5,
-    attribute_required = "Agility",
-    attribute_amount = 2
-)
+IronGloves = _arms("Iron Gauntlets", "A pair of sturdy iron gauntlets.")
+
+ClothGloves = _arms("Cloth Mittens", "A pair of basic cloth mittens.")
+
+LeatherGloves = _arms("Leather Gloves", "A pair of sturdy leather gloves.")
+
+WardenGauntlets = _arms("Warden Gauntlets", "A pair of heavy plated gauntlets that only the tough can bear.")

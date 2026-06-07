@@ -9,12 +9,14 @@ LOCATION_LOOT = {
         (loot.monsterParts, 0.2),
         (mainhand.IronSword, 0.1),
         (mainhand.IronCrossbow, 0.1),
+        (mainhand.RunedStaff, 0.1),
     ],
     "Ancient Ruins": [
         (loot.coinPouch, 0.3),
         (loot.valuableGem, 0.1),
         (loot.monsterPartsRare, 0.1),
         (helmet.IronHelmet, 0.1),
+        (offhand.SpikedTowerShield, 0.1),
     ],
     "Dark Cave": [
         (loot.coinPouch, 0.2),

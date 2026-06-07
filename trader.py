@@ -2,6 +2,7 @@ import random
 from console import console
 from utility import min_max_number
 from items.base import Equipment
+from balance import TRADER_BUY_RATE as BUY_RATE, TRADER_SELL_RATE as SELL_RATE, TRADER_STOCK_SIZE
 
 import items.helmet as helmet
 import items.arms as arms
@@ -10,9 +11,6 @@ import items.torso as torso
 import items.mainhand as mainhand
 import items.offhand as offhand
 import items.rings as rings
-
-BUY_RATE  = 1.1
-SELL_RATE = 0.9
 
 def get_all_items_from_module(module):
     return [
@@ -30,12 +28,16 @@ TRADER_POOL = (
     get_all_items_from_module(rings)
 )
 
-def generate_stock(size = 5):
+def generate_stock(size = TRADER_STOCK_SIZE):
     """Picks a random assortment of items from the pool."""
     return random.sample(TRADER_POOL, min(size, len(TRADER_POOL)))
 
 def trader_menu(player):
-    stock = generate_stock()
+    # Reuse the player's standing stock; only generate a fresh assortment when
+    # there is none (a new game, or after the last exploration cleared it).
+    if player.trader_stock is None:
+        player.trader_stock = generate_stock()
+    stock = player.trader_stock
 
     while True:
         console.print(f"[bold yellow]=== Trader ===[/bold yellow]")

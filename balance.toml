@@ -1,0 +1,395 @@
+# =============================================================================
+#  balance.toml  --  the single source of truth for every tunable game number.
+#
+#  Edit values here to re-tune the game; no Python changes required.
+#  This file is read once at startup by balance.py (the loader). Logic modules
+#  import from `balance`, never from this file directly.
+#
+#  Conventions:
+#    * TOML has no "null". An omitted optional key means "none" (e.g. a weapon
+#      with no `req_stat` has no attribute requirement).
+#    * Multipliers/rates are floats (1.0), counts/bonuses are ints (2).
+#    * Table keys are the item/enemy *display name* (the registry key).
+# =============================================================================
+
+[combat]
+stat_damage_scaling = 3   # damage added per point of a weapon's governing stat
+endurance_defence   = 2   # effective defence added per point of Endurance
+
+[combat.multipliers]
+weakness   = 1.3   # damage multiplier when an enemy is weak to the damage type
+resistance = 0.7   # damage multiplier when an enemy resists the damage type
+neutral    = 1.0   # damage multiplier otherwise
+
+[health]
+base          = 25   # health every character starts with
+per_endurance = 5    # extra max health per point of Endurance
+
+[economy]
+trader_buy_rate   = 1.1   # multiplier on item value when buying
+trader_sell_rate  = 0.9   # multiplier on item value when selling
+trader_stock_size = 5     # number of items offered per trader visit
+heal_cost_per_hp  = 1     # gold charged per point of health restored at the hub
+
+[progression]
+# Attribute points granted by any stat ring. Kept low (soft lock-in): rings
+# let a build adapt at the margins but cannot turn one build into another.
+ring_bonus = 1
+
+[creation]
+starting_gold = 50   # gold a freshly created character begins with
+
+[save]
+version = 2   # bumped when the save format / balance changes meaningfully
+
+# Starting inventory by the character's highest attribute. Item names must
+# match registry (display) names. Each kit is matched to its build's damage
+# type; the Endurance kit includes the Spiked Shield (its offensive outlet).
+[kits]
+Strength     = ["Copper Sword", "Copper Plate"]
+Agility      = ["Wooden Bow", "Leather Vest"]
+Intelligence = ["Wooden Staff", "Cloth Vest", "Magical Talisman"]
+Endurance    = ["Spiked Club", "Cloth Vest", "Spiked Shield"]
+
+
+# ============================ WEAPONS ========================================
+#  Mainhand and offhand items. Fields: damage, defence, value,
+#  optional req_stat + req_amount.
+
+[weapons."Copper Sword"]
+damage = 14
+defence = 4
+value = 20
+type = "melee"
+stat = "Strength"
+req_stat = "Strength"
+req_amount = 2
+
+[weapons."Iron Sword"]
+damage = 20
+defence = 8
+value = 40
+type = "melee"
+stat = "Strength"
+req_stat = "Strength"
+req_amount = 3
+
+[weapons."Iron Hammer"]
+damage = 30
+defence = 0
+value = 50
+type = "melee"
+stat = "Strength"
+req_stat = "Strength"
+req_amount = 5
+
+[weapons."Wooden Staff"]
+damage = 5
+defence = 2
+value = 10
+type = "magic"
+stat = "Intelligence"
+
+# A brutish Endurance-gated mainhand so a tank need not wield a wizard's staff.
+# Deliberately flat (no `stat`): the tank's damage scaling lives on its
+# Endurance shield, and a second Endurance-scaling weapon would double-dip.
+# The Endurance requirement makes it effectively tank-only.
+[weapons."Spiked Club"]
+damage = 14
+defence = 0
+value = 25
+type = "melee"
+req_stat = "Endurance"
+req_amount = 3
+
+# Mid-tier magic mainhand: gives Intelligence builds a damage upgrade path,
+# mirroring Iron Sword (melee) and Iron Crossbow (ranged).
+[weapons."Runed Staff"]
+damage = 15
+defence = 2
+value = 40
+type = "magic"
+stat = "Intelligence"
+req_stat = "Intelligence"
+req_amount = 3
+
+[weapons."Wooden Bow"]
+damage = 15
+defence = 0
+value = 30
+type = "ranged"
+stat = "Agility"
+req_stat = "Agility"
+req_amount = 2
+
+[weapons."Iron Crossbow"]
+damage = 30
+defence = 0
+value = 40
+type = "ranged"
+stat = "Agility"
+req_stat = "Agility"
+req_amount = 4
+
+# Offhand. The talisman deals flat magic damage (no `stat` = does not scale),
+# so an Intelligence build's scaling comes from a magic mainhand, not by
+# stacking two magic items.
+[weapons."Magical Talisman"]
+damage = 15
+defence = 0
+value = 100
+type = "magic"
+req_stat = "Intelligence"
+req_amount = 4
+
+[weapons."Warding Talisman"]
+damage = 0
+defence = 25
+value = 100
+req_stat = "Intelligence"
+req_amount = 4
+
+[weapons."Wooden Shield"]
+damage = 0
+defence = 15
+value = 50
+
+[weapons."Tower Shield"]
+damage = 0
+defence = 35
+value = 100
+req_stat = "Strength"
+req_amount = 6
+
+# The tank's offensive outlet: a shield whose bash scales with Endurance.
+[weapons."Spiked Shield"]
+damage = 10
+defence = 15
+value = 75
+type = "melee"
+stat = "Endurance"
+req_stat = "Endurance"
+req_amount = 4
+
+# Tier-2 Endurance offhand: the tank's damage upgrade. Req 6 (a maxed
+# Endurance plus a ring), mirroring the Tower Shield's Strength-6 gate.
+[weapons."Spiked Tower Shield"]
+damage = 16
+defence = 20
+value = 120
+type = "melee"
+stat = "Endurance"
+req_stat = "Endurance"
+req_amount = 6
+
+
+# ============================ ARMOUR =========================================
+#  Head / Torso / Arms / Legs pieces. Fields: defence, value,
+#  optional req_stat + req_amount. The slot is determined by the module that
+#  builds the piece, so it is not stored here.
+
+[armour."Copper Helmet"]
+defence = 5
+value = 20
+req_stat = "Strength"
+req_amount = 2
+
+[armour."Iron Helmet"]
+defence = 10
+value = 40
+req_stat = "Strength"
+req_amount = 4
+
+[armour."Cloth Hood"]
+defence = 1
+value = 10
+
+[armour."Leather Hood"]
+defence = 5
+value = 10
+req_stat = "Agility"
+req_amount = 2
+
+[armour."Copper Plate"]
+defence = 15
+value = 20
+req_stat = "Strength"
+req_amount = 3
+
+[armour."Iron Plate"]
+defence = 20
+value = 40
+req_stat = "Strength"
+req_amount = 5
+
+[armour."Cloth Vest"]
+defence = 5
+value = 10
+
+[armour."Leather Vest"]
+defence = 10
+value = 10
+req_stat = "Agility"
+req_amount = 3
+
+[armour."Copper Gauntlets"]
+defence = 5
+value = 20
+req_stat = "Strength"
+req_amount = 2
+
+[armour."Iron Gauntlets"]
+defence = 10
+value = 40
+req_stat = "Strength"
+req_amount = 4
+
+[armour."Cloth Mittens"]
+defence = 1
+value = 10
+
+[armour."Leather Gloves"]
+defence = 5
+value = 10
+req_stat = "Agility"
+req_amount = 2
+
+[armour."Copper Greaves"]
+defence = 5
+value = 20
+req_stat = "Strength"
+req_amount = 2
+
+[armour."Iron Greaves"]
+defence = 10
+value = 40
+req_stat = "Strength"
+req_amount = 4
+
+[armour."Cloth Wrappings"]
+defence = 1
+value = 10
+
+[armour."Leather Boots"]
+defence = 5
+value = 10
+req_stat = "Agility"
+req_amount = 2
+
+# Warden line: heavy armour gated by Endurance, giving the tank build the
+# defensive progression that the Strength (copper/iron) and Agility (leather)
+# lines give those builds. Roughly Iron-tier defence, Endurance-gated.
+[armour."Warden Helm"]
+defence = 8
+value = 40
+req_stat = "Endurance"
+req_amount = 4
+
+[armour."Warden Plate"]
+defence = 16
+value = 50
+req_stat = "Endurance"
+req_amount = 5
+
+[armour."Warden Gauntlets"]
+defence = 6
+value = 30
+req_stat = "Endurance"
+req_amount = 4
+
+[armour."Warden Greaves"]
+defence = 6
+value = 30
+req_stat = "Endurance"
+req_amount = 4
+
+
+# ============================ RINGS ==========================================
+#  Each ring boosts one attribute. The bonus amount is global
+#  (progression.ring_bonus); only the boosted attribute and price live here.
+
+[rings."Red Ring"]
+attribute = "Strength"
+value = 200
+
+[rings."Yellow Ring"]
+attribute = "Agility"
+value = 200
+
+[rings."Blue Ring"]
+attribute = "Intelligence"
+value = 200
+
+[rings."Green Ring"]
+attribute = "Endurance"
+value = 200
+
+
+# ============================ ENEMIES ========================================
+#  Fields: health, damage, defence, optional weakness + resistance.
+#  weakness/resistance are damage types ("melee"/"ranged"/"magic") or the
+#  "physical" shorthand (melee and ranged). Omit for none.
+#
+#  Each location mixes matchups so every build meets favourable and
+#  unfavourable enemies; total challenge stays comparable across builds.
+#
+#  The weakness/resistance table is deliberately symmetric: each of the three
+#  damage types is the weakness of exactly two enemies and is resisted by
+#  exactly two, so no build is systematically favoured. Goblin (tutorial) and
+#  Golem (boss) are neutral, the latter a pure stat-check climax.
+
+[enemies.Goblin]
+health = 30
+damage = 4
+defence = 0
+
+[enemies.Spider]
+health = 45
+damage = 6
+defence = 5
+weakness = "melee"
+resistance = "ranged"
+
+[enemies.Wolf]
+health = 50
+damage = 7
+defence = 5
+weakness = "ranged"
+resistance = "magic"
+
+[enemies.Slime]
+health = 55
+damage = 6
+defence = 0
+weakness = "magic"
+resistance = "melee"
+
+# Was a harmless punching bag (3 dmg); now it bites.
+[enemies.Ghoul]
+health = 55
+damage = 7
+defence = 8
+weakness = "ranged"
+resistance = "melee"
+
+[enemies.Skeleton]
+health = 50
+damage = 7
+defence = 12
+weakness = "melee"
+resistance = "magic"
+
+# Was a defence=100 gimmick; now a proper "bring magic" check: weak to magic.
+[enemies.Wraith]
+health = 45
+damage = 7
+defence = 0
+weakness = "magic"
+resistance = "ranged"
+
+# Boss: neutral to all damage types -- high health, defence and damage make it
+# a threat to every build equally, not a check on one element.
+[enemies.Golem]
+health = 120
+damage = 8
+defence = 20
