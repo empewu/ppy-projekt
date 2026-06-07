@@ -26,10 +26,11 @@ base          = 25   # health every character starts with
 per_endurance = 5    # extra max health per point of Endurance
 
 [economy]
-trader_buy_rate   = 1.1   # multiplier on item value when buying
-trader_sell_rate  = 0.9   # multiplier on item value when selling
-trader_stock_size = 5     # number of items offered per trader visit
-heal_cost_per_hp  = 1     # gold charged per point of health restored at the hub
+trader_buy_rate    = 1.1   # multiplier on item value when buying
+trader_sell_rate   = 0.9   # multiplier on item value when selling
+trader_stock_size  = 5     # number of items offered per trader visit
+trader_reroll_cost = 25    # gold to refresh the trader's stock on demand
+heal_cost_per_hp   = 1     # gold charged per point of health restored at the hub
 
 [progression]
 # Attribute points granted by any stat ring. Kept low (soft lock-in): rings
