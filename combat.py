@@ -1,5 +1,6 @@
 from utility import roll_loot, min_max_number, require_alive, compute_attack_damage, get_total_defence, describe_matchup
 from consumables import use_item_menu
+from equipment import equip_menu
 from console import console
 from exceptions import PlayerDeadError
 import copy
@@ -22,9 +23,10 @@ def start_combat(player, enemy):
         console.print(f"[red]{enemy.name} HP: {enemy.health}[/red]")
         console.print("1. Attack")
         console.print("2. Use Item")
-        console.print("3. Flee")
+        console.print("3. Swap Weapon")
+        console.print("4. Flee")
 
-        match min_max_number("> ", min_val=1, max_val=3):
+        match min_max_number("> ", min_val=1, max_val=4):
             case 1:
                 player_strike(player, enemy, damage_bonus)
                 if enemy.health <= 0:
@@ -43,6 +45,15 @@ def start_combat(player, enemy):
                 if enemy.health > 0:
                     enemy_strike(player, enemy, damage_reduction)
             case 3:
+                if not equip_menu(player, weapons_only=True, confirm_swap=False):
+                    continue  # no swap -> the turn is not spent
+                # Show how the new weapon fares, then pay the turn.
+                matchup = describe_matchup(player, enemy)
+                if matchup:
+                    console.print(matchup)
+                if enemy.health > 0:
+                    enemy_strike(player, enemy, damage_reduction)
+            case 4:
                 console.print("[yellow]You flee![/yellow]")
                 return "flee"
 

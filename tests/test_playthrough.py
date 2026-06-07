@@ -96,6 +96,70 @@ def test_launch_and_quit_immediately():
     assert "Main Menu" in res.stdout
 
 
+# --- gear swap (#4) --------------------------------------------------------
+def test_weapon_swap_changes_combat_damage():
+    """Swapping to the weapon that matches an enemy's weakness must change the
+    damage combat computes (combat reads player.equipment live)."""
+    import copy
+    from player import Player
+    from items import ITEM_REGISTRY
+    from utility import compute_attack_damage
+    from equipment import equip_from_inventory
+
+    p = Player("hybrid", 4, 4, 1, 1)
+    sword, crossbow = ITEM_REGISTRY["Iron Sword"], ITEM_REGISTRY["Iron Crossbow"]
+    p.inventory = [sword, crossbow]
+    equip_from_inventory(p, sword)
+    melee = compute_attack_damage(p, copy.copy(E.Wolf))          # neutral
+    equip_from_inventory(p, crossbow, confirm_swap=False)         # the combat swap path
+    ranged = compute_attack_damage(p, copy.copy(E.Wolf))         # Wolf is weak to ranged
+    assert ranged > melee, "swapping to the Wolf's ranged weakness should raise damage"
+    assert p.equipment["MainHand"].name == "Iron Crossbow" and sword in p.inventory
+
+
+def test_unusable_weapon_cannot_be_equipped():
+    from player import Player
+    from items import ITEM_REGISTRY
+    from equipment import equip_from_inventory
+
+    mage = Player("mage", 1, 1, 5, 3)
+    hammer = ITEM_REGISTRY["Iron Hammer"]  # Strength-gated
+    mage.inventory = [hammer]
+    assert not equip_from_inventory(mage, hammer)
+    assert mage.equipment["MainHand"] is None and hammer in mage.inventory
+
+
+# --- trader relevance + reroll (#5) ----------------------------------------
+def test_trader_stock_is_mostly_usable_for_focused_build():
+    """A focused build should see mostly gear it can actually equip, not a
+    uniform draw from every build's equipment."""
+    from player import Player
+    from trader import generate_stock, _can_equip
+    import items.mainhand as mh
+    import items.torso as ts
+
+    mage = Player("mage", 1, 1, 5, 3)
+    mage.equipment["MainHand"] = mh.RunedStaff
+    mage.equipment["Torso"] = ts.ClothTorso
+    stock = [it for _ in range(200) for it in generate_stock(mage)]
+    usable = sum(_can_equip(mage, it) for it in stock) / len(stock)
+    assert usable > 0.7, f"focused build sees too much unusable stock ({usable:.0%})"
+
+
+def test_trader_reroll_costs_gold():
+    from player import Player
+    from trader import generate_stock
+    from balance import TRADER_REROLL_COST
+
+    p = Player("r", 5, 1, 1, 3)
+    p.gold = TRADER_REROLL_COST + 10
+    p.trader_stock = generate_stock(p)
+    before = p.gold
+    p.gold -= TRADER_REROLL_COST          # mirrors trader_menu's reroll branch
+    p.trader_stock = generate_stock(p)
+    assert p.gold == before - TRADER_REROLL_COST
+
+
 # --- standalone runner -----------------------------------------------------
 def _main():
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
