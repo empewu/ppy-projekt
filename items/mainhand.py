@@ -15,6 +15,8 @@ IronHammer = _mainhand("Iron Hammer", "A sturdy iron hammer. Impossible to defen
 
 WoodenStaff = _mainhand("Wooden Staff", "A basic wooden staff. Barely better than a stick.")
 
+RunedStaff = _mainhand("Runed Staff", "A staff carved with glowing runes that focus magical power.")
+
 WoodenBow = _mainhand("Wooden Bow", "A basic wooden bow.")
 
 IronCrossbow = _mainhand("Iron Crossbow", "A sturdy crossbow with an iron mechanism.")

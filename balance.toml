@@ -90,6 +90,17 @@ value = 10
 type = "magic"
 stat = "Intelligence"
 
+# Mid-tier magic mainhand: gives Intelligence builds a damage upgrade path,
+# mirroring Iron Sword (melee) and Iron Crossbow (ranged).
+[weapons."Runed Staff"]
+damage = 15
+defence = 2
+value = 40
+type = "magic"
+stat = "Intelligence"
+req_stat = "Intelligence"
+req_amount = 3
+
 [weapons."Wooden Bow"]
 damage = 15
 defence = 0

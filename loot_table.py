@@ -9,6 +9,7 @@ LOCATION_LOOT = {
         (loot.monsterParts, 0.2),
         (mainhand.IronSword, 0.1),
         (mainhand.IronCrossbow, 0.1),
+        (mainhand.RunedStaff, 0.1),
     ],
     "Ancient Ruins": [
         (loot.coinPouch, 0.3),
