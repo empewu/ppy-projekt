@@ -5,6 +5,7 @@ from inventory import inventory_menu
 from exploration import exploration_menu
 from exceptions import PlayerDeadError
 from trader import trader_menu
+from alchemy import alchemy_menu
 from balance import HEAL_COST_PER_HP
 
 def game_hub(player):
@@ -17,10 +18,11 @@ def game_hub(player):
             console.print("2. Trader.")
             console.print("3. Inventory & Equipment.")
             console.print(f"4. Rest & Heal. [dim]({HEAL_COST_PER_HP}g per HP)[/dim]")
-            console.print("5. Save.")
+            console.print("5. Alchemy.")
+            console.print("6. Save.")
             console.print("0. Quit to main menu.")
 
-            match min_max_number("> ", min_val=0, max_val=5):
+            match min_max_number("> ", min_val=0, max_val=6):
                 case 1:
                     pass
                     exploration_menu(player)
@@ -31,6 +33,8 @@ def game_hub(player):
                 case 4:
                     heal_at_hub(player)
                 case 5:
+                    alchemy_menu(player)
+                case 6:
                     save_menu(player)
                 case 0:
                     break

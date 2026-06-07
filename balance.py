@@ -53,6 +53,8 @@ WEAPONS = _DATA["weapons"]
 ARMOUR = _DATA["armour"]
 RINGS = _DATA["rings"]
 ENEMIES = _DATA["enemies"]
+POTIONS = _DATA.get("potions", {})
+RECIPES = _DATA.get("recipes", {})
 
 
 # --- construction helpers ----------------------------------------------------
@@ -112,11 +114,22 @@ def enemy_kwargs(name):
     )
 
 
+def potion_kwargs(name):
+    s = POTIONS[name]
+    return dict(
+        description=s["description"],
+        value=s["value"],
+        effect=s["effect"],
+        amount=s["amount"],
+    )
+
+
 # --- validation --------------------------------------------------------------
 # Fail loudly at startup on a malformed balance.toml rather than silently
 # breaking something mid-game.
 _VALID_STATS = {"Strength", "Agility", "Intelligence", "Endurance"}
 _VALID_TYPES = {MELEE, RANGED, MAGIC}
+_VALID_EFFECTS = {"heal", "damage_buff", "defence_buff"}
 
 
 def _validate():
@@ -156,6 +169,20 @@ def _validate():
         for key in ("weakness", "resistance"):
             if key in s and s[key] not in valid_matchups:
                 raise ValueError(f"balance.toml: enemy {name!r} has invalid {key} {s[key]!r}")
+
+    for name, s in POTIONS.items():
+        for key in ("description", "value", "effect", "amount"):
+            if key not in s:
+                raise ValueError(f"balance.toml: potion {name!r} missing '{key}'")
+        if s["effect"] not in _VALID_EFFECTS:
+            raise ValueError(f"balance.toml: potion {name!r} has invalid effect {s['effect']!r}")
+
+    for name, r in RECIPES.items():
+        if name not in POTIONS:
+            raise ValueError(f"balance.toml: recipe {name!r} has no matching potion")
+        ingredients = r.get("ingredients")
+        if not ingredients or not all(isinstance(c, int) and c > 0 for c in ingredients.values()):
+            raise ValueError(f"balance.toml: recipe {name!r} needs positive integer ingredient counts")
 
 
 _validate()

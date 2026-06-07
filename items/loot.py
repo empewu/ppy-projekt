@@ -20,18 +20,18 @@ valuableGem = Item(
 
 monsterParts = Item(
     "Monster Parts",
-    "Bones, organs, viscera and the like. Valuable for alchemy and not much else.",
+    "Bones, organs, viscera and the like. Brewed into healing potions at the alchemy bench.",
     value = 30
     )
 
 monsterPartsRare = Item(
     "Rare Monster Parts",
-    "Venom sacs, silk glands and similar rare organs. Not as common and therefore more valuable.",
+    "Venom sacs, silk glands and similar rare organs. Used to brew defensive draughts.",
     value = 30
     )
 
 monsterPartsMagical = Item(
     "Magical Monster Parts",
-    "Slime brains, golem hearts and similar magical 'organs'. Especially valuable.",
+    "Slime brains, golem hearts and similar magical 'organs'. Used to brew potent elixirs.",
     value = 80
     )

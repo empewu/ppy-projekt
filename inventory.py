@@ -2,6 +2,7 @@
 from console import console
 from utility import min_max_number, apply_ring, remove_ring, get_total_damage, get_total_defence, STAT_COLOURS
 from items.base import Equipment
+from consumables import use_item_menu
 
 def inventory_menu(player):
     while True:
@@ -9,10 +10,11 @@ def inventory_menu(player):
         console.print("1. View Inventory")
         console.print("2. View Equipment")
         console.print("3. Equip Item")
-        console.print("4. Show Statistics")
+        console.print("4. Use Item")
+        console.print("5. Show Statistics")
         console.print("0. Back")
 
-        match min_max_number("> ", min_val=0, max_val=4):
+        match min_max_number("> ", min_val=0, max_val=5):
             case 0:
                 return
             case 1:
@@ -22,6 +24,8 @@ def inventory_menu(player):
             case 3:
                 equip_item(player)
             case 4:
+                use_item_menu(player, in_combat=False)
+            case 5:
                 show_stats(player)
 
 def show_inventory(player):
