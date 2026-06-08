@@ -47,6 +47,39 @@ Monster parts were loot with no use. **Fix:** they became crafting ingredients,
 with each tier given a distinct role (common → heal, rare → defend, magical →
 empower). Loot descriptions now name what each part brews.
 
+### #4 — Gear was hub-locked  *(shipped)*
+The matchup system rewards "carry two weapon types, swap to each enemy's
+weakness", but equipping was hub-only — so you committed to one weapon for a
+whole location run, exactly where matchups matter. **Fix:** gear can now be
+changed *between encounters* (the continue prompt accepts `e`) and *in combat*
+(a **Swap Weapon** action). The in-combat swap costs your turn (the enemy
+strikes, like Use Item) and re-prints the matchup hint for the new weapon.
+
+- **Why it was nearly free to build:** `compute_attack_damage` already reads
+  `player.equipment` live every turn, so changing the equipped weapon mid-fight
+  just works — the action only needed wiring, not a new damage path.
+- **Refactor:** equip logic was extracted from `inventory.py` into a shared
+  `equipment.py` (`equip_from_inventory` / `equip_menu`) so the hub, the
+  between-encounter step, and combat all share one implementation. The combat
+  swap passes `confirm_swap=False` to skip the redundant "swap?" prompt.
+
+### #5 — Trader showed gear you couldn't use  *(shipped)*
+The trader drew uniformly from every build's gear, so a focused character mostly
+saw unusable items, and late-game gold had nothing to buy. **Fix:**
+`generate_stock(player, ...)` weights the pool by **relevance** (equippable +
+matches the build's dominant stat) and by **tier** (favours gear near the
+character's current power, suppresses outgrown junk), plus a **paid reroll** as
+a gold sink.
+
+- **Effect:** a mage's usable-stock share rose from ~37% (uniform) to ~85%
+  (weighted); late-game stock skews to higher-value gear.
+- **Tiering metric:** average value of equipped gear — no new save state, and it
+  rises monotonically as you upgrade.
+- **Reroll synergy:** top-tier gear is deliberately a bit rarer in the weighting,
+  so the paid reroll is how a rich player hunts for it — relevance and the gold
+  sink reinforce each other.
+
+
 ## Alchemy design decisions (and why)
 
 - **Using an item costs your turn** (the enemy still strikes). This is the
@@ -94,6 +127,9 @@ than nerf potions — but that punishes players who don't craft, so it's not
 recommended.
 
 ## Roadmap / open ideas
+
+Already shipped since this list was first written: mid-dungeon gear swap (#4)
+and the build-aware trader with a reroll gold sink (#5) — see the sections above.
 
 Not yet done; rough priority order:
 
